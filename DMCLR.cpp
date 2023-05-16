@@ -1,5 +1,4 @@
 #include "pch.h"
-#include ".\dm\dm.tlh"
 #include "DMCLR.h"
 
 Idmsoft* GetDmObject()
@@ -31,6 +30,12 @@ Idmsoft* GetDmObject()
 
 }
 
+static const wchar_t* StringToWchar(String^ value)
+{
+	auto str = (wchar_t*)(void*)Marshal::StringToHGlobalUni(value);
+	return str;
+}
+
 String^ DMCLR::DMSoft::Ver()
 {
 	auto ver = (WCHAR*)dm->Ver();
@@ -45,6 +50,16 @@ int DMCLR::DMSoft::MoveTo(int x, int y)
 int DMCLR::DMSoft::MoveR(int x, int y)
 {
 	return dm->MoveR(x, y);
+}
+
+int DMCLR::DMSoft::FindWindow(String^ class_name, String^ title_name)
+{
+	return dm->FindWindowW(StringToWchar(class_name), StringToWchar(title_name));
+}
+
+int DMCLR::DMSoft::BindWindow(int hwnd, String^ display, String^ mouse, String^ keypad, int mode)
+{
+	return dm->BindWindow(hwnd, StringToWchar(display), StringToWchar(mouse), StringToWchar(mouse), mode);
 }
 
 DMCLR::DMSoft::DMSoft()
