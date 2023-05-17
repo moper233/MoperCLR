@@ -13,31 +13,6 @@ namespace OPCLR {
 
 	static libop op;
 
-	static const wchar_t* StringToWchar(String^ value)
-	{
-		auto str = (wchar_t*)(void*)Marshal::StringToHGlobalUni(value);
-		return str;
-	}
-
-	static const std::string ToCPPString(String^ value)
-	{
-		std::string str = marshal_as<std::string>(value->ToString());
-		return str;
-	}
-
-	static String^ ToNetString(std::string value)
-	{
-		String^ str = gcnew String(value.c_str());
-		return str;
-	}
-
-	static String^ WStringToString(wstring value)
-	{
-		String^ str = gcnew String(value.c_str());
-		return str;
-	}
-
-
 	String^ OPSoft::Ver()
 	{
 		auto a = op.Ver();
@@ -46,7 +21,7 @@ namespace OPCLR {
 
 	int OPSoft::SetPath(String^ path)
 	{
-		auto str = StringToWchar(path);
+		auto str = Util::StringToWchar(path);
 
 		long ret;
 		op.SetPath(str, &ret);
@@ -57,14 +32,14 @@ namespace OPCLR {
 	{
 		wstring str;
 		op.GetPath(str);
-		return WStringToString(str);
+		return Util::WStringToString(str);
 	}
 
 	String^ OPSoft::GetBasePath()
 	{
 		wstring str;
 		op.GetBasePath(str);
-		return WStringToString(str);
+		return Util::WStringToString(str);
 	}
 
 	int OPSoft::GetID()
@@ -100,7 +75,7 @@ namespace OPCLR {
 	//inject dll
 	int OPSoft::InjectDll(String^ process_name, String^ dll_name) {
 		long ret;
-		op.InjectDll(StringToWchar(process_name), StringToWchar(dll_name), &ret);
+		op.InjectDll(Util::StringToWchar(process_name), Util::StringToWchar(dll_name), &ret);
 		return ret;
 	}
 	//设置是否开启或者关闭插件内部的图片缓存机制
@@ -112,7 +87,7 @@ namespace OPCLR {
 	//取上次操作的图色区域，保存为file(24位位图)
 	int OPSoft::CapturePre(String^ file_name) {
 		long ret;
-		op.CapturePre(StringToWchar(file_name), &ret);
+		op.CapturePre(Util::StringToWchar(file_name), &ret);
 		return ret;
 	}
 
@@ -120,35 +95,35 @@ namespace OPCLR {
 	//A星算法
 	String^ OPSoft::AStarFindPath(long mapWidth, long mapHeight, String^ disable_points, long beginX, long beginY, long endX, long endY) {
 		wstring ret;
-		op.AStarFindPath(mapWidth, mapHeight, StringToWchar(disable_points), beginX, beginY, endX, endY, ret);
-		return WStringToString(ret);
+		op.AStarFindPath(mapWidth, mapHeight, Util::StringToWchar(disable_points), beginX, beginY, endX, endY, ret);
+		return Util::WStringToString(ret);
 	}
 
 	String^ OPSoft::FindNearestPos(String^ all_pos, long type, long x, long y) {
 		wstring ret;
-		op.FindNearestPos(StringToWchar(all_pos), type, x, y, ret);
-		return WStringToString(ret);
+		op.FindNearestPos(Util::StringToWchar(all_pos), type, x, y, ret);
+		return Util::WStringToString(ret);
 	}
 
 	//--------------------windows api------------------------------
 	//根据指定条件,枚举系统中符合条件的窗口
 	String^ OPSoft::EnumWindow(long parent, String^ title, String^ class_name, long filter) {
 		wstring ret;
-		op.EnumWindow(parent, StringToWchar(title), StringToWchar(class_name), filter, ret);
-		return WStringToString(ret);
+		op.EnumWindow(parent, Util::StringToWchar(title), Util::StringToWchar(class_name), filter, ret);
+		return Util::WStringToString(ret);
 	}
 	//根据指定进程以及其它条件,枚举系统中符合条件的窗口
 	String^ OPSoft::EnumWindowByProcess(String^ process_name, String^ title, String^ class_name, long filter) {
 		wstring ret;
-		op.EnumWindowByProcess(StringToWchar(process_name), StringToWchar(title), StringToWchar(class_name), filter, ret);
-		return WStringToString(ret);
+		op.EnumWindowByProcess(Util::StringToWchar(process_name), Util::StringToWchar(title), Util::StringToWchar(class_name), filter, ret);
+		return Util::WStringToString(ret);
 	}
 
 	//根据指定进程名,枚举系统中符合条件的进程PID
 	String^ OPSoft::EnumProcess(String^ name) {
 		wstring ret;
-		op.EnumProcess(StringToWchar(name), ret);
-		return WStringToString(ret);
+		op.EnumProcess(Util::StringToWchar(name), ret);
+		return Util::WStringToString(ret);
 	}
 	//把窗口坐标转换为屏幕坐标
 	System::Tuple<long, long, int>^ OPSoft::ClientToScreen(long ClientToScreen) {
@@ -162,27 +137,27 @@ namespace OPCLR {
 	int OPSoft::FindWindow(String^ class_name, String^ title)
 	{
 		long ret;
-		op.FindWindow(StringToWchar(class_name), StringToWchar(title), &ret);
+		op.FindWindow(Util::StringToWchar(class_name), Util::StringToWchar(title), &ret);
 		return ret;
 	}
 	//根据指定的进程名字，来查找可见窗口
 	int OPSoft::FindWindowByProcess(String^ process_name, String^ class_name, String^ title) {
 		long ret;
-		op.FindWindowByProcess(StringToWchar(process_name), StringToWchar(class_name), StringToWchar(title), &ret);
+		op.FindWindowByProcess(Util::StringToWchar(process_name), Util::StringToWchar(class_name), Util::StringToWchar(title), &ret);
 		return ret;
 	}
 
 	//根据指定的进程Id，来查找可见窗口
 	int OPSoft::FindWindowByProcessId(long process_id, String^ class_name, String^ title) {
 		long ret;
-		op.FindWindowByProcessId(process_id, StringToWchar(class_name), StringToWchar(title), &ret);
+		op.FindWindowByProcessId(process_id, Util::StringToWchar(class_name), Util::StringToWchar(title), &ret);
 		return ret;
 	}
 	//查找符合类名或者标题名的顶层可见窗口,如果指定了parent,则在parent的第一层子窗口中查找
 	int OPSoft::FindWindowEx(long parent, String^ class_name, String^ title)
 	{
 		long ret;
-		op.FindWindowEx(parent, StringToWchar(class_name), StringToWchar(title), &ret);
+		op.FindWindowEx(parent, Util::StringToWchar(class_name), Util::StringToWchar(title), &ret);
 		return ret;
 	}
 	//获取窗口客户区域在屏幕上的位置
@@ -231,7 +206,7 @@ namespace OPCLR {
 	String^ OPSoft::GetProcessInfo(long pid) {
 		wstring ret;
 		op.GetProcessInfo(pid, ret);
-		return WStringToString(ret);
+		return Util::WStringToString(ret);
 	}
 	//获取特殊窗口
 	int OPSoft::GetSpecialWindow(long flag) {
@@ -249,7 +224,7 @@ namespace OPCLR {
 	String^ OPSoft::GetWindowClass(long hwnd) {
 		wstring ret;
 		op.GetWindowClass(hwnd, ret);
-		return WStringToString(ret);
+		return Util::WStringToString(ret);
 	}
 	//获取指定窗口所在的进程ID
 	int OPSoft::GetWindowProcessId(long hwnd) {
@@ -261,7 +236,7 @@ namespace OPCLR {
 	String^ OPSoft::GetWindowProcessPath(long hwnd) {
 		wstring ret;
 		op.GetWindowProcessPath(hwnd, ret);
-		return WStringToString(ret);
+		return Util::WStringToString(ret);
 	}
 	//获取窗口在屏幕上的位置
 	System::Tuple<long, long, long, long, int>^ OPSoft::GetWindowRect(long hwnd) {
@@ -283,7 +258,7 @@ namespace OPCLR {
 	String^ OPSoft::GetWindowTitle(long hwnd) {
 		wstring ret;
 		op.GetWindowTitle(hwnd, ret);
-		return WStringToString(ret);
+		return Util::WStringToString(ret);
 	}
 	//移动指定窗口到指定位置
 	int OPSoft::MoveWindow(long hwnd, long x, long y) {
@@ -328,7 +303,7 @@ namespace OPCLR {
 	//设置窗口的标题
 	int OPSoft::SetWindowText(long hwnd, String^ title) {
 		long ret;
-		op.SetWindowText(hwnd, StringToWchar(title), &ret);
+		op.SetWindowText(hwnd, Util::StringToWchar(title), &ret);
 		return ret;
 	}
 	//设置窗口的透明度
@@ -340,33 +315,33 @@ namespace OPCLR {
 	//向指定窗口发送文本数据
 	int OPSoft::SendString(long hwnd, String^ str) {
 		long ret;
-		op.SendString(hwnd, StringToWchar(str), &ret);
+		op.SendString(hwnd, Util::StringToWchar(str), &ret);
 		return ret;
 	}
 	//向指定窗口发送文本数据-输入法
 	int OPSoft::SendStringIme(long hwnd, String^ str) {
 		long ret;
-		op.SendStringIme(hwnd, StringToWchar(str), &ret);
+		op.SendStringIme(hwnd, Util::StringToWchar(str), &ret);
 		return ret;
 	}
 	//运行可执行文件,可指定模式
 	int OPSoft::RunApp(String^ cmdline, long mode) {
 		long ret;
-		op.RunApp(StringToWchar(cmdline), mode, &ret);
+		op.RunApp(Util::StringToWchar(cmdline), mode, &ret);
 		return ret;
 	}
 	//运行可执行文件，可指定显示模式
 	int OPSoft::WinExec(String^ cmdline, long cmdshow) {
 		long ret;
-		op.WinExec(StringToWchar(cmdline), cmdshow, &ret);
+		op.WinExec(Util::StringToWchar(cmdline), cmdshow, &ret);
 		return ret;
 	}
 
 	//运行命令行并返回结果
 	String^ OPSoft::GetCmdStr(String^ cmd, long millseconds) {
 		wstring ret;
-		op.GetCmdStr(StringToWchar(cmd), millseconds, ret);
-		return WStringToString(ret);
+		op.GetCmdStr(Util::StringToWchar(cmd), millseconds, ret);
+		return Util::WStringToString(ret);
 	}
 
 	//--------------------Background -----------------------
@@ -374,7 +349,7 @@ namespace OPCLR {
 	int OPSoft::BindWindow(long hwnd, String^ display, String^ mouse, String^ keypad, long mode)
 	{
 		long ret;
-		op.BindWindow(hwnd, StringToWchar(display), StringToWchar(mouse), StringToWchar(keypad), mode, &ret);
+		op.BindWindow(hwnd, Util::StringToWchar(display), Util::StringToWchar(mouse), Util::StringToWchar(keypad), mode, &ret);
 		return ret;
 	}
 	//
@@ -393,7 +368,7 @@ namespace OPCLR {
 		op.GetCursorPos(&x, &y, &ret);
 		auto str = std::to_string(x) + "-" + std::to_string(y);
 
-		return ToNetString(str);
+		return Util::ToNetString(str);
 	}
 
 	//鼠标相对于上次的位置移动rx,ry.
@@ -521,7 +496,7 @@ namespace OPCLR {
 	int OPSoft::KeyDownChar(String^ vk_code)
 	{
 		long ret;
-		op.KeyDownChar(StringToWchar(vk_code), &ret);
+		op.KeyDownChar(Util::StringToWchar(vk_code), &ret);
 		return ret;
 	}
 	//弹起来虚拟键vk_code
@@ -535,7 +510,7 @@ namespace OPCLR {
 	int OPSoft::KeyUpChar(String^ vk_code)
 	{
 		long ret;
-		op.KeyUpChar(StringToWchar(vk_code), &ret);
+		op.KeyUpChar(Util::StringToWchar(vk_code), &ret);
 		return ret;
 	}
 	//等待指定的按键按下 (前台,不是后台)
@@ -557,7 +532,7 @@ namespace OPCLR {
 	int OPSoft::KeyPressChar(String^ vk_code)
 	{
 		long ret;
-		op.KeyPressChar(StringToWchar(vk_code), &ret);
+		op.KeyPressChar(Util::StringToWchar(vk_code), &ret);
 		return ret;
 	}
 
@@ -565,14 +540,14 @@ namespace OPCLR {
 	//抓取指定区域(x1, y1, x2, y2)的图像, 保存为file
 	int OPSoft::Capture(long x1, long y1, long x2, long y2, String^ file_name) {
 		long ret;
-		op.Capture(x1, y1, x2, y2, StringToWchar(file_name), &ret);
+		op.Capture(x1, y1, x2, y2, Util::StringToWchar(file_name), &ret);
 		return ret;
 	}
 
 	//比较指定坐标点(x,y)的颜色
 	int OPSoft::CmpColor(long x, long y, String^ color, double sim) {
 		long ret;
-		op.CmpColor(x, y, StringToWchar(color), sim, &ret);
+		op.CmpColor(x, y, Util::StringToWchar(color), sim, &ret);
 		return ret;
 	}
 
@@ -581,91 +556,91 @@ namespace OPCLR {
 		long ret;
 		long x;
 		long y;
-		op.FindColor(x1, y1, x2, y2, StringToWchar(color), sim, dir, &x, &y, &ret);
+		op.FindColor(x1, y1, x2, y2, Util::StringToWchar(color), sim, dir, &x, &y, &ret);
 		return gcnew Tuple<long, long, int>(x, y, ret);
 
 	}
 	//查找指定区域内的所有颜色
 	String^ OPSoft::FindColorEx(long x1, long y1, long x2, long y2, String^ color, double sim, long dir) {
 		wstring ret;
-		op.FindColorEx(x1, y1, x2, y2, StringToWchar(color), sim, dir, ret);
-		return WStringToString(ret);
+		op.FindColorEx(x1, y1, x2, y2, Util::StringToWchar(color), sim, dir, ret);
+		return Util::WStringToString(ret);
 	}
 	//根据指定的多点查找颜色坐标
 	Tuple<long, long, int>^ OPSoft::FindMultiColor(long x1, long y1, long x2, long y2, String^ first_color, String^ offset_color, double sim, long dir) {
 		long ret;
 		long x;
 		long y;
-		op.FindMultiColor(x1, y1, x2, y2, StringToWchar(first_color), StringToWchar(offset_color), sim, dir, &x, &y, &ret);
+		op.FindMultiColor(x1, y1, x2, y2, Util::StringToWchar(first_color), Util::StringToWchar(offset_color), sim, dir, &x, &y, &ret);
 		return gcnew Tuple<long, long, int>(x, y, ret);
 	}
 	//根据指定的多点查找所有颜色坐标
 	String^ OPSoft::FindMultiColorEx(long x1, long y1, long x2, long y2, String^ first_color, String^ offset_color, double sim, long dir) {
 		wstring ret;
-		op.FindMultiColorEx(x1, y1, x2, y2, StringToWchar(first_color), StringToWchar(offset_color), sim, dir, ret);
-		return WStringToString(ret);
+		op.FindMultiColorEx(x1, y1, x2, y2, Util::StringToWchar(first_color), Util::StringToWchar(offset_color), sim, dir, ret);
+		return Util::WStringToString(ret);
 	}
 	//查找指定区域内的图片
 	Tuple<long, long, int>^ OPSoft::FindPic(long x1, long y1, long x2, long y2, String^ files, String^ delta_color, double sim, long dir) {
 		long ret;
 		long x;
 		long y;
-		op.FindPic(x1, y1, x2, y2, StringToWchar(files), StringToWchar(delta_color), sim, dir, &x, &y, &ret);
+		op.FindPic(x1, y1, x2, y2, Util::StringToWchar(files), Util::StringToWchar(delta_color), sim, dir, &x, &y, &ret);
 		return gcnew Tuple<long, long, int>(x, y, ret);
 	}
 	//查找多个图片
 	String^ OPSoft::FindPicEx(long x1, long y1, long x2, long y2, String^ files, String^ delta_color, double sim, long dir) {
 		wstring ret;
-		op.FindPicEx(x1, y1, x2, y2, StringToWchar(files), StringToWchar(delta_color), sim, dir, ret);
-		return WStringToString(ret);
+		op.FindPicEx(x1, y1, x2, y2, Util::StringToWchar(files), Util::StringToWchar(delta_color), sim, dir, ret);
+		return Util::WStringToString(ret);
 	}
 	//
 	//这个函数可以查找多个图片, 并且返回所有找到的图像的坐标.此函数同FindPicEx.只是返回值不同.(file1,x,y|file2,x,y|...)
 	String^ OPSoft::FindPicExS(long x1, long y1, long x2, long y2, String^ files, String^ delta_color, double sim, long dir) {
 		wstring ret;
-		op.FindPicExS(x1, y1, x2, y2, StringToWchar(files), StringToWchar(delta_color), sim, dir, ret);
-		return WStringToString(ret);
+		op.FindPicExS(x1, y1, x2, y2, Util::StringToWchar(files), Util::StringToWchar(delta_color), sim, dir, ret);
+		return Util::WStringToString(ret);
 	}
 	//查找指定区域内的颜色块,颜色格式"RRGGBB-DRDGDB",注意,和按键的颜色格式相反
 	Tuple<long, long, int>^ OPSoft::FindColorBlock(long x1, long y1, long x2, long y2, String^ color, double sim, long count, long height, long width) {
 		long ret;
 		long x;
 		long y;
-		op.FindColorBlock(x1, y1, x2, y2, StringToWchar(color), sim, count, height, width, &x, &y, &ret);
+		op.FindColorBlock(x1, y1, x2, y2, Util::StringToWchar(color), sim, count, height, width, &x, &y, &ret);
 		return gcnew Tuple<long, long, int>(x, y, ret);
 	}
 
 	//查找指定区域内的所有颜色块, 颜色格式"RRGGBB-DRDGDB", 注意, 和按键的颜色格式相反
 	String^ OPSoft::FindColorBlockEx(long x1, long y1, long x2, long y2, String^ color, double sim, long count, long height, long width) {
 		wstring ret;
-		op.FindColorBlockEx(x1, y1, x2, y2, StringToWchar(color), sim, count, height, width, ret);
-		return WStringToString(ret);
+		op.FindColorBlockEx(x1, y1, x2, y2, Util::StringToWchar(color), sim, count, height, width, ret);
+		return Util::WStringToString(ret);
 	}
 
 	//获取(x,y)的颜色
 	String^ OPSoft::GetColor(long x, long y) {
 		wstring ret;
 		op.GetColor(x, y, ret);
-		return WStringToString(ret);
+		return Util::WStringToString(ret);
 	}
 	//
 	//设置图像输入方式，默认窗口截图
 	int OPSoft::SetDisplayInput(String^ mode) {
 		long ret;
-		op.SetDisplayInput(StringToWchar(mode), &ret);
+		op.SetDisplayInput(Util::StringToWchar(mode), &ret);
 		return ret;
 	}
 
 	int OPSoft::LoadPic(String^ file_name)
 	{
 		long ret;
-		op.LoadPic(StringToWchar(file_name), &ret);
+		op.LoadPic(Util::StringToWchar(file_name), &ret);
 		return ret;
 	}
 
 	int OPSoft::FreePic(String^ file_name) {
 		long ret;
-		op.FreePic(StringToWchar(file_name), &ret);
+		op.FreePic(Util::StringToWchar(file_name), &ret);
 		return ret;
 	}
 
@@ -681,21 +656,21 @@ namespace OPCLR {
 	//
 	String^ OPSoft::MatchPicName(String^ pic_name) {
 		wstring ret;
-		op.MatchPicName(StringToWchar(pic_name), ret);
-		return WStringToString(ret);
+		op.MatchPicName(Util::StringToWchar(pic_name), ret);
+		return Util::WStringToString(ret);
 	}
 	//----------------------ocr-------------------------
 	//设置字库文件
 	int OPSoft::SetDict(long idx, String^ file_name)
 	{
 		long ret;
-		op.SetDict(idx, StringToWchar(file_name), &ret);
+		op.SetDict(idx, Util::StringToWchar(file_name), &ret);
 		return ret;
 	}
 	//设置内存字库文件
 	int OPSoft::SetMemDict(long idx, String^ data, long size) {
 		long ret;
-		op.SetMemDict(idx, StringToWchar(data), size, &ret);
+		op.SetMemDict(idx, Util::StringToWchar(data), size, &ret);
 		return ret;
 	}
 	//使用哪个字库文件进行识别
@@ -707,69 +682,69 @@ namespace OPCLR {
 	//识别屏幕范围(x1,y1,x2,y2)内符合color_format的字符串,并且相似度为sim,sim取值范围(0.1-1.0),
 	String^ OPSoft::Ocr(long x1, long y1, long x2, long y2, String^ color, double sim) {
 		wstring ret;
-		op.Ocr(x1, y1, x2, y2, StringToWchar(color), sim, ret);
-		return WStringToString(ret);
+		op.Ocr(x1, y1, x2, y2, Util::StringToWchar(color), sim, ret);
+		return Util::WStringToString(ret);
 	}
 
 	//回识别到的字符串，以及每个字符的坐标.
 	String^ OPSoft::OcrEx(long x1, long y1, long x2, long y2, String^ color, double sim) {
 		wstring ret;
-		op.OcrEx(x1, y1, x2, y2, StringToWchar(color), sim, ret);
-		return WStringToString(ret);
+		op.OcrEx(x1, y1, x2, y2, Util::StringToWchar(color), sim, ret);
+		return Util::WStringToString(ret);
 	}
 	//在屏幕范围(x1,y1,x2,y2)内,查找string(可以是任意个字符串的组合),并返回符合color_format的坐标位置
 	Tuple<long, long, int>^ OPSoft::FindStr(long x1, long y1, long x2, long y2, String^ strs, String^ color, double simxy) {
 		long ret;
 		long x;
 		long y;
-		op.FindStr(x1, y1, x2, y2, StringToWchar(strs), StringToWchar(color), simxy, &x, &y, &ret);
+		op.FindStr(x1, y1, x2, y2, Util::StringToWchar(strs), Util::StringToWchar(color), simxy, &x, &y, &ret);
 		return gcnew Tuple<long, long, int>(x, y, ret);
 	}
 	//返回符合color_format的所有坐标位置
 	String^ OPSoft::FindStrEx(long x1, long y1, long x2, long y2, String^ strs, String^ color, double sim) {
 
 		wstring ret;
-		op.FindStrEx(x1, y1, x2, y2, StringToWchar(strs), StringToWchar(color), sim, ret);
-		return WStringToString(ret);
+		op.FindStrEx(x1, y1, x2, y2, Util::StringToWchar(strs), Util::StringToWchar(color), sim, ret);
+		return Util::WStringToString(ret);
 	}
 	//识别屏幕范围(x1,y1,x2,y2)内的字符串,自动二值化，而无需指定颜色
 	String^ OPSoft::OcrAuto(long x1, long y1, long x2, long y2, double sim) {
 		wstring ret;
 		op.OcrAuto(x1, y1, x2, y2, sim, ret);
-		return WStringToString(ret);
+		return Util::WStringToString(ret);
 	}
 	//从文件中识别图片
 	String^ OPSoft::OcrFromFile(String^ file_name, String^ color_format, double sim) {
 		wstring ret;
-		op.OcrFromFile(StringToWchar(file_name), StringToWchar(color_format), sim, ret);
-		return WStringToString(ret);
+		op.OcrFromFile(Util::StringToWchar(file_name), Util::StringToWchar(color_format), sim, ret);
+		return Util::WStringToString(ret);
 	}
 	//从文件中识别图片,无需指定颜色
 	String^ OPSoft::OcrAutoFromFile(String^ file_name, double sim) {
 		wstring ret;
-		op.OcrAutoFromFile(StringToWchar(file_name), sim, ret);
-		return WStringToString(ret);
+		op.OcrAutoFromFile(Util::StringToWchar(file_name), sim, ret);
+		return Util::WStringToString(ret);
 	}
 
 	//查找频幕中的直线
 	String^ OPSoft::FindLine(long x1, long y1, long x2, long y2, String^ color, double sim) {
 		wstring ret;
-		op.FindLine(x1, y1, x2, y2, StringToWchar(color), sim, ret);
-		return WStringToString(ret);
+		op.FindLine(x1, y1, x2, y2, Util::StringToWchar(color), sim, ret);
+		return Util::WStringToString(ret);
 	}
 
 	//向某进程写入数据
 	int OPSoft::WriteData(long hwnd, String^ address, String^ data, long size) {
 		long ret;
-		op.WriteData(hwnd, StringToWchar(address), StringToWchar(data), size, &ret);
+		op.WriteData(hwnd, Util::StringToWchar(address), Util::StringToWchar(data), size, &ret);
 		return ret;
 	}
 
 	//读取数据
 	String^ OPSoft::ReadData(long hwnd, String^ address, long size) {
 		wstring ret;
-		op.ReadData(hwnd, StringToWchar(address), size, ret);
-		return WStringToString(ret);
+		op.ReadData(hwnd, Util::StringToWchar(address), size, ret);
+		return Util::WStringToString(ret);
 	}
 
 	OPSoft::~OPSoft()

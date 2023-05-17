@@ -1,5 +1,6 @@
 #pragma once
 #include ".\Library\Include\msdk.h"
+#include "Util.h"
 #include <msclr\marshal.h>
 #include <msclr\marshal_cppstd.h>
 

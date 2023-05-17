@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include<vector>
-
+#include "Util.h"
 #include ".\Library\Include\libop.h"
 #include <msclr\marshal.h>
 #include <msclr\marshal_cppstd.h>
@@ -17,7 +17,7 @@ using namespace System::Runtime::InteropServices;
 namespace OPCLR {
 	public ref class OPSoft
 	{
-
+		
 	public:
 		String^ Ver();
 		int SetPath(String^ path);

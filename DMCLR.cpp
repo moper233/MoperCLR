@@ -30,31 +30,21 @@ Idmsoft* GetDmObject()
 
 }
 
-static const wchar_t* StringToWchar(String^ value)
-{
-	auto str = (wchar_t*)(void*)Marshal::StringToHGlobalUni(value);
-	return str;
-}
-static String^ BSTRToString(_bstr_t value)
-{
-	return gcnew String((WCHAR*)value);
-}
-
 String^ DMCLR::DMSoft::Ver()
 {
 	auto ver = (WCHAR*)dm->Ver();
-	return BSTRToString(ver);
+	return Util::Util::BSTRToString(ver);
 }
 
 int DMCLR::DMSoft::SetPath(String^ path)
 {
-	return dm->SetPath(StringToWchar(path));
+	return dm->SetPath(Util::Util::StringToWchar(path));
 }
 
 String^ DMCLR::DMSoft::Ocr(long x1, long y1, long x2, long y2, String^ color, double sim)
 {
-	auto ret = dm->Ocr(x1, y1, x2, y2, StringToWchar(color), sim);
-	return BSTRToString(ret);
+	auto ret = dm->Ocr(x1, y1, x2, y2, Util::Util::StringToWchar(color), sim);
+	return Util::Util::BSTRToString(ret);
 }
 
 Tuple<long, long, int>^ DMCLR::DMSoft::FindStr(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim)
@@ -63,13 +53,13 @@ Tuple<long, long, int>^ DMCLR::DMSoft::FindStr(long x1, long y1, long x2, long y
 	VARIANT x;
 	VARIANT y;
 
-	ret = dm->FindStr(x1, y1, x2, y2, StringToWchar(str), StringToWchar(color), sim, &x, &y);
+	ret = dm->FindStr(x1, y1, x2, y2, Util::StringToWchar(str), Util::StringToWchar(color), sim, &x, &y);
 	return gcnew Tuple<long, long, int>(x.lVal, y.lVal, ret);
 }
 
 int DMCLR::DMSoft::GetResultCount(String^ str)
 {
-	return dm->GetResultCount(StringToWchar(str));
+	return dm->GetResultCount(Util::StringToWchar(str));
 }
 
 Tuple<long, long, int>^ DMCLR::DMSoft::GetResultPos(String^ str, long index)
@@ -78,23 +68,23 @@ Tuple<long, long, int>^ DMCLR::DMSoft::GetResultPos(String^ str, long index)
 	VARIANT x;
 	VARIANT y;
 
-	ret = dm->GetResultPos(StringToWchar(str), index, &x, &y);
+	ret = dm->GetResultPos(Util::StringToWchar(str), index, &x, &y);
 	return gcnew Tuple<long, long, int>(x.lVal, y.lVal, ret);
 }
 
 int DMCLR::DMSoft::StrStr(String^ s, String^ str)
 {
-	return dm->StrStr(StringToWchar(s), StringToWchar(str));
+	return dm->StrStr(Util::StringToWchar(s), Util::StringToWchar(str));
 }
 
 int DMCLR::DMSoft::SendCommand(String^ cmd)
 {
-	return dm->SendCommand(StringToWchar(cmd));
+	return dm->SendCommand(Util::StringToWchar(cmd));
 }
 
 long DMCLR::DMSoft::UseDict(long index) { return dm->UseDict(index); }
 String^ DMCLR::DMSoft::GetBasePath() { return ""; }
-long DMCLR::DMSoft::SetDictPwd(String^ pwd) { return dm->SetDictPwd(StringToWchar(pwd)); }
+long DMCLR::DMSoft::SetDictPwd(String^ pwd) { return dm->SetDictPwd(Util::StringToWchar(pwd)); }
 String^ DMCLR::DMSoft::OcrInFile(long x1, long y1, long x2, long y2, String^ pic_name, String^ color, double sim) { return ""; }
 long DMCLR::DMSoft::Capture(long x1, long y1, long x2, long y2, String^ file) { return 0; }
 long DMCLR::DMSoft::KeyPress(long vk) { return dm->KeyPress(vk); }
@@ -190,7 +180,7 @@ long DMCLR::DMSoft::SetEnv(long index, String^ name, String^ value) { return 0; 
 long DMCLR::DMSoft::SendString(long hwnd, String^ str) { return 0; }
 long DMCLR::DMSoft::DelEnv(long index, String^ name) { return 0; }
 String^ DMCLR::DMSoft::GetPath() { return ""; }
-long DMCLR::DMSoft::SetDict(long index, String^ dict_name) { return dm->SetDict(index, StringToWchar(dict_name)); }
+long DMCLR::DMSoft::SetDict(long index, String^ dict_name) { return dm->SetDict(index, Util::StringToWchar(dict_name)); }
 long DMCLR::DMSoft::FindPic(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir) { return 0; }
 String^ DMCLR::DMSoft::FindPicEx(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir) { return ""; }
 long DMCLR::DMSoft::SetClientSize(long hwnd, long width, long height) { return 0; }
@@ -202,7 +192,7 @@ String^ DMCLR::DMSoft::FindFloat(long hwnd, String^ addr_range, float float_valu
 String^ DMCLR::DMSoft::FindDouble(long hwnd, String^ addr_range, double double_value_min, double double_value_max) { return ""; }
 String^ DMCLR::DMSoft::FindString(long hwnd, String^ addr_range, String^ string_value, long type) { return ""; }
 long DMCLR::DMSoft::GetModuleBaseAddr(long hwnd, String^ module_name) { return 0; }
-String^ DMCLR::DMSoft::MoveToEx(long x, long y, long w, long h) { return BSTRToString(dm->MoveToEx(x, y, w, h)); }
+String^ DMCLR::DMSoft::MoveToEx(long x, long y, long w, long h) { return Util::BSTRToString(dm->MoveToEx(x, y, w, h)); }
 String^ DMCLR::DMSoft::MatchPicName(String^ pic_name) { return ""; }
 long DMCLR::DMSoft::AddDict(long index, String^ dict_info) { return 0; }
 long DMCLR::DMSoft::EnterCri() { return 0; }
@@ -238,20 +228,20 @@ long DMCLR::DMSoft::GetScreenWidth() { return 0; }
 long DMCLR::DMSoft::GetScreenHeight() { return 0; }
 long DMCLR::DMSoft::BindWindowEx(long hwnd, String^ display, String^ mouse, String^ keypad, String^ public_desc, long mode)
 {
-	return dm->BindWindowEx(hwnd, StringToWchar(display), StringToWchar(mouse), StringToWchar(keypad), StringToWchar(public_desc), mode);
+	return dm->BindWindowEx(hwnd, Util::StringToWchar(display), Util::StringToWchar(mouse), Util::StringToWchar(keypad), Util::StringToWchar(public_desc), mode);
 }
 String^ DMCLR::DMSoft::GetDiskSerial(long index) { return ""; }
-String^ DMCLR::DMSoft::Md5(String^ str) { return BSTRToString(dm->Md5(StringToWchar(str))); }
-String^ DMCLR::DMSoft::GetMac() { return BSTRToString(dm->GetMac()); }
+String^ DMCLR::DMSoft::Md5(String^ str) { return Util::BSTRToString(dm->Md5(Util::StringToWchar(str))); }
+String^ DMCLR::DMSoft::GetMac() { return Util::BSTRToString(dm->GetMac()); }
 long DMCLR::DMSoft::ActiveInputMethod(long hwnd, String^ id) { return 0; }
 long DMCLR::DMSoft::CheckInputMethod(long hwnd, String^ id) { return 0; }
 long DMCLR::DMSoft::FindInputMethod(String^ id) { return 0; }
 long DMCLR::DMSoft::GetCursorPos() { return 0; }
 long DMCLR::DMSoft::BindWindow(long hwnd, String^ display, String^ mouse, String^ keypad, long mode)
 {
-	return dm->BindWindow(hwnd, StringToWchar(display), StringToWchar(mouse), StringToWchar(keypad), mode);
+	return dm->BindWindow(hwnd, Util::StringToWchar(display), Util::StringToWchar(mouse), Util::StringToWchar(keypad), mode);
 }
-long DMCLR::DMSoft::FindWindow(String^ class_name, String^ title_name) { return dm->FindWindowW(StringToWchar(class_name), StringToWchar(title_name)); }
+long DMCLR::DMSoft::FindWindow(String^ class_name, String^ title_name) { return dm->FindWindowW(Util::StringToWchar(class_name), Util::StringToWchar(title_name)); }
 long DMCLR::DMSoft::GetScreenDepth() { return 0; }
 long DMCLR::DMSoft::SetScreen(long width, long height, long depth) { return 0; }
 long DMCLR::DMSoft::ExitOs(long type) { return 0; }
@@ -259,7 +249,7 @@ String^ DMCLR::DMSoft::GetDir(long type) { return ""; }
 long DMCLR::DMSoft::GetOsType() { return 0; }
 long DMCLR::DMSoft::FindWindowEx(long parent, String^ class_name, String^ title_name)
 {
-	return dm->FindWindowExW(parent, StringToWchar(class_name), StringToWchar(title_name));
+	return dm->FindWindowExW(parent, Util::StringToWchar(class_name), Util::StringToWchar(title_name));
 }
 long DMCLR::DMSoft::SetExportDict(long index, String^ dict_name) { return 0; }
 String^ DMCLR::DMSoft::GetCursorShape() { return ""; }
@@ -334,7 +324,7 @@ long DMCLR::DMSoft::KeyPressStr(String^ key_str, long delay) { return 0; }
 long DMCLR::DMSoft::EnableKeypadPatch(long en) { return 0; }
 long DMCLR::DMSoft::EnableKeypadSync(long en, long time_out) { return 0; }
 long DMCLR::DMSoft::EnableMouseSync(long en, long time_out) { return 0; }
-long DMCLR::DMSoft::DmGuard(long en, String^ type) { return dm->DmGuard(en, StringToWchar(type)); }
+long DMCLR::DMSoft::DmGuard(long en, String^ type) { return dm->DmGuard(en, Util::StringToWchar(type)); }
 long DMCLR::DMSoft::FaqCaptureFromFile(long x1, long y1, long x2, long y2, String^ file, long quality) { return 0; }
 String^ DMCLR::DMSoft::FindIntEx(long hwnd, String^ addr_range, long int_value_min, long int_value_max, long type, long step, long multi_thread, long mode) { return ""; }
 String^ DMCLR::DMSoft::FindFloatEx(long hwnd, String^ addr_range, float float_value_min, float float_value_max, long step, long multi_thread, long mode) { return ""; }
@@ -396,7 +386,7 @@ long DMCLR::DMSoft::EnableIme(long en) { return 0; }
 
 long DMCLR::DMSoft::Reg(String^ code, String^ Ver)
 {
-	return dm->Reg(StringToWchar(code), StringToWchar(Ver));
+	return dm->Reg(Util::StringToWchar(code), Util::StringToWchar(Ver));
 }
 String^ DMCLR::DMSoft::SelectFile() { return ""; }
 String^ DMCLR::DMSoft::SelectDirectory() { return ""; }
