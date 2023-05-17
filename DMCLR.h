@@ -1,5 +1,5 @@
 #pragma once
-#include ".\dm\dm.tlh"
+#include ".\Library\x32\dm\dm.tlh"
 #include <msclr\marshal.h>
 #include <msclr\marshal_cppstd.h>
 

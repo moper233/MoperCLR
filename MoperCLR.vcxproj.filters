@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MoperCLR.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -27,11 +24,14 @@
     <ClInclude Include="DMCLR.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="KMCLR.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OPCLR.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MoperCLR.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="AssemblyInfo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -39,6 +39,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="DMCLR.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="KMCLR.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="OPCLR.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
