@@ -16,11 +16,18 @@ namespace KMCLR {
 		HANDLE handle;
 
 	public:
+		String^ Ver();
 		int Open();
 		int Open_VidPid(int vid, int pid);
 		int Close();
 		int MoveR(int x, int y);
+		int MoveR2(int x,int y);
 		int MoveTo(int x, int y);
+		int MoveTo2(int x, int y);
+		int MoveTo3(int x, int y);
+		int MoveTo3_D(int x, int y);
+		Tuple<long, long, int>^ GetCurrMousePos();
+		Tuple<long, long, int>^ GetCurrMousePos2();
 		~KMSoft();
 	};
 }
