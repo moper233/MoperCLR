@@ -135,8 +135,17 @@ long DMCLR::DMSoft::SetColGapNoDict(long col_gap) { return 0; }
 long DMCLR::DMSoft::SetWordLineHeightNoDict(long line_height) { return 0; }
 long DMCLR::DMSoft::SetWordGapNoDict(long word_gap) { return 0; }
 long DMCLR::DMSoft::GetWordResultCount(String^ str) { return 0; }
-long DMCLR::DMSoft::GetWordResultPos(String^ str, long index) { return 0; }
-String^ DMCLR::DMSoft::GetWordResultStr(String^ str, long index) { return ""; }
+Tuple<long, long, int>^ DMCLR::DMSoft::GetWordResultPos(String^ str, long index)
+{
+	VARIANT x, y;
+	auto ret = dm->GetWordResultPos(Util::StringToWchar(str),index,&x,&y);
+	return gcnew Tuple<long, long, int>(x.lVal,y.lVal,ret);
+}
+String^ DMCLR::DMSoft::GetWordResultStr(String^ str, long index)
+{ 
+	auto ret = dm->GetWordResultStr(Util::StringToWchar(str),index);
+	return Util::BSTRToString(ret);
+}
 String^ DMCLR::DMSoft::GetWords(long x1, long y1, long x2, long y2, String^ color, double sim) { return ""; }
 String^ DMCLR::DMSoft::GetWordsNoDict(long x1, long y1, long x2, long y2, String^ color) { return ""; }
 long DMCLR::DMSoft::SetShowErrorMsg(long show) { return dm->SetShowErrorMsg(show); }

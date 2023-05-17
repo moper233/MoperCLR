@@ -66,7 +66,7 @@ namespace DMCLR {
 		long SetWordLineHeightNoDict(long line_height);
 		long SetWordGapNoDict(long word_gap);
 		long GetWordResultCount(String^ str);
-		long GetWordResultPos(String^ str, long index);
+		Tuple<long, long, int>^ GetWordResultPos(String^ str, long index);
 		String^ GetWordResultStr(String^ str, long index);
 		String^ GetWords(long x1, long y1, long x2, long y2, String^ color, double sim);
 		String^ GetWordsNoDict(long x1, long y1, long x2, long y2, String^ color);

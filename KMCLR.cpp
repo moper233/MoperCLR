@@ -30,6 +30,11 @@ int KMCLR::KMSoft::Close()
 	return ret == 0 ? 1 : ret;
 }
 
+int KMCLR::KMSoft::MiddleDown()
+{
+	return M_MiddleDown(handle);
+}
+
 int KMCLR::KMSoft::MoveR(int x, int y)
 {
 	return M_MoveR(handle, x, y);

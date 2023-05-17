@@ -20,6 +20,7 @@ namespace KMCLR {
 		int Open();
 		int Open_VidPid(int vid, int pid);
 		int Close();
+		int MiddleDown();
 		int MoveR(int x, int y);
 		int MoveR2(int x,int y);
 		int MoveTo(int x, int y);
