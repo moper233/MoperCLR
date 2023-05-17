@@ -57,7 +57,7 @@ namespace DMCLR {
 		long ShowScrMsg(long x1, long y1, long x2, long y2, String^ msg, String^ color);
 		long SetMinRowGap(long row_gap);
 		long SetMinColGap(long col_gap);
-		long FindColor(long x1, long y1, long x2, long y2, String^ color, double sim, long dir);
+		Tuple<long, long, int>^ FindColor(long x1, long y1, long x2, long y2, String^ color, double sim, long dir);
 		String^ FindColorEx(long x1, long y1, long x2, long y2, String^ color, double sim, long dir);
 		long SetWordLineHeight(long line_height);
 		long SetWordGap(long word_gap);
@@ -127,7 +127,7 @@ namespace DMCLR {
 		long DelEnv(long index, String^ name);
 		String^ GetPath();
 		long SetDict(long index, String^ dict_name);
-		long FindPic(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir);
+		Tuple<long, long, int>^ FindPic(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir);
 		String^ FindPicEx(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir);
 		long SetClientSize(long hwnd, long width, long height);
 		long ReadInt(long hwnd, String^ addr, long type);
@@ -179,7 +179,7 @@ namespace DMCLR {
 		long ActiveInputMethod(long hwnd, String^ id);
 		long CheckInputMethod(long hwnd, String^ id);
 		long FindInputMethod(String^ id);
-		long GetCursorPos();
+		Tuple<long, long, int>^ GetCursorPos();
 		long BindWindow(long hwnd, String^ display, String^ mouse, String^ keypad, long mode);
 		long FindWindow(String^ class_name, String^ title_name);
 		long GetScreenDepth();
@@ -282,11 +282,11 @@ namespace DMCLR {
 		long FindShape(long x1, long y1, long x2, long y2, String^ offset_color, double sim, long dir);
 		String^ FindShapeE(long x1, long y1, long x2, long y2, String^ offset_color, double sim, long dir);
 		String^ FindShapeEx(long x1, long y1, long x2, long y2, String^ offset_color, double sim, long dir);
-		String^ FindStrS(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim);
+		Tuple<long, long, String^>^ FindStrS(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim);
 		String^ FindStrExS(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim);
-		String^ FindStrFastS(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim);
+		Tuple<long, long, String^>^ FindStrFastS(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim);
 		String^ FindStrFastExS(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim);
-		String^ FindPicS(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir);
+		Tuple<long, long, String^>^ FindPicS(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir);
 		String^ FindPicExS(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir);
 		long ClearDict(long index);
 		String^ GetMachineCodeNoMac();
@@ -428,9 +428,9 @@ namespace DMCLR {
 		long SetShowAsmErrorMsg(long show);
 		String^ GetSystemInfo(String^ type, long method);
 		long SetFindPicMultithreadCount(long count);
-		long FindPicSim(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, long sim, long dir);
+		Tuple<long, long, int>^ FindPicSim(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, long sim, long dir);
 		String^ FindPicSimEx(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, long sim, long dir);
-		long FindPicSimMem(long x1, long y1, long x2, long y2, String^ pic_info, String^ delta_color, long sim, long dir);
+		Tuple<long, long, int>^ FindPicSimMem(long x1, long y1, long x2, long y2, String^ pic_info, String^ delta_color, long sim, long dir);
 		String^ FindPicSimMemEx(long x1, long y1, long x2, long y2, String^ pic_info, String^ delta_color, long sim, long dir);
 		String^ FindPicSimE(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, long sim, long dir);
 		String^ FindPicSimMemE(long x1, long y1, long x2, long y2, String^ pic_info, String^ delta_color, long sim, long dir);

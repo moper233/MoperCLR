@@ -15,7 +15,7 @@ int KMCLR::KMSoft::Open()
 
 int KMCLR::KMSoft::Open_VidPid(int vid, int pid)
 {
-	//handle = M_Open_VidPid(vid, pid);
+	handle = M_Open_VidPid(vid, pid);
 	return handle == NULL ? 0 : 1;
 }
 

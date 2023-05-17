@@ -83,7 +83,11 @@ int DMCLR::DMSoft::SendCommand(String^ cmd)
 }
 
 long DMCLR::DMSoft::UseDict(long index) { return dm->UseDict(index); }
-String^ DMCLR::DMSoft::GetBasePath() { return ""; }
+String^ DMCLR::DMSoft::GetBasePath()
+{
+	auto ret = dm->GetBasePath();
+	return Util::BSTRToString(ret);
+}
 long DMCLR::DMSoft::SetDictPwd(String^ pwd) { return dm->SetDictPwd(Util::StringToWchar(pwd)); }
 String^ DMCLR::DMSoft::OcrInFile(long x1, long y1, long x2, long y2, String^ pic_name, String^ color, double sim) { return ""; }
 long DMCLR::DMSoft::Capture(long x1, long y1, long x2, long y2, String^ file) { return 0; }
@@ -111,8 +115,19 @@ long DMCLR::DMSoft::ScreenToClient(long hwnd) { return 0; }
 long DMCLR::DMSoft::ShowScrMsg(long x1, long y1, long x2, long y2, String^ msg, String^ color) { return 0; }
 long DMCLR::DMSoft::SetMinRowGap(long row_gap) { return 0; }
 long DMCLR::DMSoft::SetMinColGap(long col_gap) { return 0; }
-long DMCLR::DMSoft::FindColor(long x1, long y1, long x2, long y2, String^ color, double sim, long dir) { return 0; }
-String^ DMCLR::DMSoft::FindColorEx(long x1, long y1, long x2, long y2, String^ color, double sim, long dir) { return ""; }
+Tuple<long, long, int>^ DMCLR::DMSoft::FindColor(long x1, long y1, long x2, long y2, String^ color, double sim, long dir)
+{
+	long ret;
+	VARIANT x;
+	VARIANT y;
+	ret = dm->FindColor(x1, y1, x2, y2, Util::StringToWchar(color), sim, dir, &x, &y);
+	return gcnew Tuple<long, long, int>(x.lVal, y.lVal, ret);
+}
+String^ DMCLR::DMSoft::FindColorEx(long x1, long y1, long x2, long y2, String^ color, double sim, long dir)
+{
+	auto ret = dm->FindColorEx(x1, y1, x2, y2, Util::StringToWchar(color), sim, dir);
+	return Util::BSTRToString(ret);
+}
 long DMCLR::DMSoft::SetWordLineHeight(long line_height) { return 0; }
 long DMCLR::DMSoft::SetWordGap(long word_gap) { return 0; }
 long DMCLR::DMSoft::SetRowGapNoDict(long row_gap) { return 0; }
@@ -181,8 +196,19 @@ long DMCLR::DMSoft::SendString(long hwnd, String^ str) { return 0; }
 long DMCLR::DMSoft::DelEnv(long index, String^ name) { return 0; }
 String^ DMCLR::DMSoft::GetPath() { return ""; }
 long DMCLR::DMSoft::SetDict(long index, String^ dict_name) { return dm->SetDict(index, Util::StringToWchar(dict_name)); }
-long DMCLR::DMSoft::FindPic(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir) { return 0; }
-String^ DMCLR::DMSoft::FindPicEx(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir) { return ""; }
+Tuple<long, long, int>^ DMCLR::DMSoft::FindPic(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir)
+{
+	long ret;
+	VARIANT x;
+	VARIANT y;
+	ret = dm->FindPic(x1, y1, x2, y2, Util::StringToWchar(pic_name), Util::StringToWchar(delta_color), sim, dir, &x, &y);
+	return gcnew Tuple<long, long, int>(x.lVal, y.lVal, ret);
+}
+String^ DMCLR::DMSoft::FindPicEx(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir)
+{
+	auto ret = dm->FindPicEx(x1, y1, x2, y2, Util::StringToWchar(pic_name), Util::StringToWchar(delta_color), sim, dir);
+	return Util::BSTRToString(ret);
+}
 long DMCLR::DMSoft::SetClientSize(long hwnd, long width, long height) { return 0; }
 long DMCLR::DMSoft::ReadInt(long hwnd, String^ addr, long type) { return 0; }
 float DMCLR::DMSoft::ReadFloat(long hwnd, String^ addr) { return 0; }
@@ -214,49 +240,100 @@ long DMCLR::DMSoft::WriteData(long hwnd, String^ addr, String^ data) { return 0;
 String^ DMCLR::DMSoft::FindData(long hwnd, String^ addr_range, String^ data) { return ""; }
 long DMCLR::DMSoft::SetPicPwd(String^ pwd) { return 0; }
 long DMCLR::DMSoft::Log(String^ info) { return 0; }
-String^ DMCLR::DMSoft::FindStrE(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim) { return ""; }
-String^ DMCLR::DMSoft::FindColorE(long x1, long y1, long x2, long y2, String^ color, double sim, long dir) { return ""; }
-String^ DMCLR::DMSoft::FindPicE(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir) { return ""; }
-String^ DMCLR::DMSoft::FindMultiColorE(long x1, long y1, long x2, long y2, String^ first_color, String^ offset_color, double sim, long dir) { return ""; }
-long DMCLR::DMSoft::SetExactOcr(long exact_ocr) { return 0; }
-String^ DMCLR::DMSoft::ReadString(long hwnd, String^ addr, long type, long len) { return ""; }
-long DMCLR::DMSoft::FoobarTextPrintDir(long hwnd, long dir) { return 0; }
-String^ DMCLR::DMSoft::OcrEx(long x1, long y1, long x2, long y2, String^ color, double sim) { return ""; }
-long DMCLR::DMSoft::SetDisplayInput(String^ mode) { return 0; }
-long DMCLR::DMSoft::GetTime() { return 0; }
-long DMCLR::DMSoft::GetScreenWidth() { return 0; }
-long DMCLR::DMSoft::GetScreenHeight() { return 0; }
+String^ DMCLR::DMSoft::FindStrE(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim)
+{
+	auto ret = dm->FindStrE(x1, y1, x2, y2, Util::StringToWchar(str), Util::StringToWchar(color), sim);
+	return Util::BSTRToString(ret);
+}
+String^ DMCLR::DMSoft::FindColorE(long x1, long y1, long x2, long y2, String^ color, double sim, long dir)
+{
+	auto ret = dm->FindColorE(x1, y1, x2, y2, Util::StringToWchar(color), sim, dir);
+	return Util::BSTRToString(ret);
+}
+String^ DMCLR::DMSoft::FindPicE(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir)
+{
+	auto ret = dm->FindPicE(x1, y1, x2, y2, Util::StringToWchar(pic_name), Util::StringToWchar(delta_color), sim, dir);
+	return Util::BSTRToString(ret);
+}
+String^ DMCLR::DMSoft::FindMultiColorE(long x1, long y1, long x2, long y2, String^ first_color, String^ offset_color, double sim, long dir)
+{
+	auto ret = dm->FindMultiColorE(x1, y1, x2, y2, Util::StringToWchar(first_color), Util::StringToWchar(offset_color), sim, dir);
+	return Util::BSTRToString(ret);
+}
+long DMCLR::DMSoft::SetExactOcr(long exact_ocr)
+{
+	return dm->SetExactOcr(exact_ocr);
+}
+String^ DMCLR::DMSoft::ReadString(long hwnd, String^ addr, long type, long len)
+{
+	auto ret = dm->ReadString(hwnd, Util::StringToWchar(addr), type, len);
+	return Util::BSTRToString(ret);
+}
+long DMCLR::DMSoft::FoobarTextPrintDir(long hwnd, long dir)
+{
+	return dm->FoobarTextPrintDir(hwnd, dir);
+}
+String^ DMCLR::DMSoft::OcrEx(long x1, long y1, long x2, long y2, String^ color, double sim)
+{
+	auto ret = dm->OcrEx(x1, y1, x2, y2, Util::StringToWchar(color), sim);
+	return Util::BSTRToString(ret);
+}
+long DMCLR::DMSoft::SetDisplayInput(String^ mode)
+{
+	return dm->SetDisplayInput(Util::StringToWchar(mode));
+}
+long DMCLR::DMSoft::GetTime()
+{
+	return dm->GetTime();
+}
+long DMCLR::DMSoft::GetScreenWidth() { return dm->GetScreenWidth(); }
+long DMCLR::DMSoft::GetScreenHeight() { return dm->GetScreenHeight(); }
 long DMCLR::DMSoft::BindWindowEx(long hwnd, String^ display, String^ mouse, String^ keypad, String^ public_desc, long mode)
 {
 	return dm->BindWindowEx(hwnd, Util::StringToWchar(display), Util::StringToWchar(mouse), Util::StringToWchar(keypad), Util::StringToWchar(public_desc), mode);
 }
-String^ DMCLR::DMSoft::GetDiskSerial(long index) { return ""; }
-String^ DMCLR::DMSoft::Md5(String^ str) { return Util::BSTRToString(dm->Md5(Util::StringToWchar(str))); }
+String^ DMCLR::DMSoft::GetDiskSerial(long index)
+{
+	auto ret = dm->GetDiskSerial(index);
+	return Util::BSTRToString(ret);
+}
+String^ DMCLR::DMSoft::Md5(String^ str)
+{
+	return Util::BSTRToString(dm->Md5(Util::StringToWchar(str)));
+}
 String^ DMCLR::DMSoft::GetMac() { return Util::BSTRToString(dm->GetMac()); }
-long DMCLR::DMSoft::ActiveInputMethod(long hwnd, String^ id) { return 0; }
-long DMCLR::DMSoft::CheckInputMethod(long hwnd, String^ id) { return 0; }
-long DMCLR::DMSoft::FindInputMethod(String^ id) { return 0; }
-long DMCLR::DMSoft::GetCursorPos() { return 0; }
+long DMCLR::DMSoft::ActiveInputMethod(long hwnd, String^ id) { return dm->ActiveInputMethod(hwnd, Util::StringToWchar(id)); }
+long DMCLR::DMSoft::CheckInputMethod(long hwnd, String^ id) { return dm->CheckInputMethod(hwnd, Util::StringToWchar(id)); }
+long DMCLR::DMSoft::FindInputMethod(String^ id) { return dm->FindInputMethod(Util::StringToWchar(id)); }
+Tuple<long, long, int>^ DMCLR::DMSoft::GetCursorPos()
+{
+	VARIANT x, y;
+	auto ret = dm->GetCursorPos(&x, &y);
+	return gcnew Tuple<long, long, int>(x.intVal, y.intVal, ret);
+}
 long DMCLR::DMSoft::BindWindow(long hwnd, String^ display, String^ mouse, String^ keypad, long mode)
 {
 	return dm->BindWindow(hwnd, Util::StringToWchar(display), Util::StringToWchar(mouse), Util::StringToWchar(keypad), mode);
 }
-long DMCLR::DMSoft::FindWindow(String^ class_name, String^ title_name) { return dm->FindWindowW(Util::StringToWchar(class_name), Util::StringToWchar(title_name)); }
-long DMCLR::DMSoft::GetScreenDepth() { return 0; }
-long DMCLR::DMSoft::SetScreen(long width, long height, long depth) { return 0; }
-long DMCLR::DMSoft::ExitOs(long type) { return 0; }
-String^ DMCLR::DMSoft::GetDir(long type) { return ""; }
-long DMCLR::DMSoft::GetOsType() { return 0; }
+long DMCLR::DMSoft::FindWindow(String^ class_name, String^ title_name)
+{
+	return dm->FindWindowW(Util::StringToWchar(class_name), Util::StringToWchar(title_name));
+}
+long DMCLR::DMSoft::GetScreenDepth() { return dm->GetScreenDepth(); }
+long DMCLR::DMSoft::SetScreen(long width, long height, long depth) { return dm->SetScreen(width, height, depth); }
+long DMCLR::DMSoft::ExitOs(long type) { return dm->ExitOs(type); }
+String^ DMCLR::DMSoft::GetDir(long type) { return Util::BSTRToString(dm->GetDir(type)); }
+long DMCLR::DMSoft::GetOsType() { return dm->GetOsType(); }
 long DMCLR::DMSoft::FindWindowEx(long parent, String^ class_name, String^ title_name)
 {
 	return dm->FindWindowExW(parent, Util::StringToWchar(class_name), Util::StringToWchar(title_name));
 }
-long DMCLR::DMSoft::SetExportDict(long index, String^ dict_name) { return 0; }
-String^ DMCLR::DMSoft::GetCursorShape() { return ""; }
-long DMCLR::DMSoft::DownCpu(long type, long rate) { return 0; }
-String^ DMCLR::DMSoft::GetCursorSpot() { return ""; }
-long DMCLR::DMSoft::SendString2(long hwnd, String^ str) { return 0; }
-long DMCLR::DMSoft::FaqPost(String^ server, long handle, long request_type, long time_out) { return 0; }
+long DMCLR::DMSoft::SetExportDict(long index, String^ dict_name) { return dm->SetExportDict(index, Util::StringToWchar(dict_name)); }
+String^ DMCLR::DMSoft::GetCursorShape() { return Util::BSTRToString(dm->GetCursorShape()); }
+long DMCLR::DMSoft::DownCpu(long type, long rate) { return dm->DownCpu(type, rate); }
+String^ DMCLR::DMSoft::GetCursorSpot() { return Util::BSTRToString(dm->GetCursorSpot()); }
+long DMCLR::DMSoft::SendString2(long hwnd, String^ str) { return dm->SendString2(hwnd, Util::StringToWchar(str)); }
+long DMCLR::DMSoft::FaqPost(String^ server, long handle, long request_type, long time_out) { return dm->FaqPost(Util::StringToWchar(server), handle, request_type, time_out); }
 String^ DMCLR::DMSoft::FaqFetch() { return ""; }
 String^ DMCLR::DMSoft::FetchWord(long x1, long y1, long x2, long y2, String^ color, String^ word) { return ""; }
 long DMCLR::DMSoft::CaptureJpg(long x1, long y1, long x2, long y2, String^ file, long quality) { return 0; }
@@ -264,44 +341,111 @@ long DMCLR::DMSoft::FindStrWithFont(long x1, long y1, long x2, long y2, String^ 
 String^ DMCLR::DMSoft::FindStrWithFontE(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim, String^ font_name, long font_size, long flag) { return ""; }
 String^ DMCLR::DMSoft::FindStrWithFontEx(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim, String^ font_name, long font_size, long flag) { return ""; }
 String^ DMCLR::DMSoft::GetDictInfo(String^ str, String^ font_name, long font_size, long flag) { return ""; }
-long DMCLR::DMSoft::SaveDict(long index, String^ file) { return 0; }
-long DMCLR::DMSoft::GetWindowProcessId(long hwnd) { return 0; }
-String^ DMCLR::DMSoft::GetWindowProcessPath(long hwnd) { return ""; }
-long DMCLR::DMSoft::LockInput(long lock) { return 0; }
-String^ DMCLR::DMSoft::GetPicSize(String^ pic_name) { return ""; }
-long DMCLR::DMSoft::GetID() { return 0; }
+long DMCLR::DMSoft::SaveDict(long index, String^ file)
+{
+	return dm->SaveDict(index, Util::StringToWchar(file));
+}
+long DMCLR::DMSoft::GetWindowProcessId(long hwnd) { return dm->GetWindowProcessId(hwnd); }
+String^ DMCLR::DMSoft::GetWindowProcessPath(long hwnd) { return Util::BSTRToString(dm->GetWindowProcessPath(hwnd)); }
+long DMCLR::DMSoft::LockInput(long lock) { return dm->LockInput(lock); }
+String^ DMCLR::DMSoft::GetPicSize(String^ pic_name) { return Util::BSTRToString(dm->GetPicSize(Util::StringToWchar(pic_name))); }
+long DMCLR::DMSoft::GetID() { return dm->GetID(); }
 long DMCLR::DMSoft::CapturePng(long x1, long y1, long x2, long y2, String^ file) { return 0; }
 long DMCLR::DMSoft::CaptureGif(long x1, long y1, long x2, long y2, String^ file, long delay, long time) { return 0; }
 long DMCLR::DMSoft::ImageToBmp(String^ pic_name, String^ bmp_name) { return 0; }
 long DMCLR::DMSoft::FindStrFast(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim) { return 0; }
-String^ DMCLR::DMSoft::FindStrFastEx(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim) { return ""; }
-String^ DMCLR::DMSoft::FindStrFastE(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim) { return ""; }
-long DMCLR::DMSoft::EnableDisplayDebug(long enable_debug) { return 0; }
-long DMCLR::DMSoft::CapturePre(String^ file) { return 0; }
-long DMCLR::DMSoft::RegEx(String^ code, String^ Ver, String^ ip) { return 0; }
-String^ DMCLR::DMSoft::GetMachineCode() { return ""; }
-long DMCLR::DMSoft::SetClipboard(String^ data) { return 0; }
-String^ DMCLR::DMSoft::GetClipboard() { return ""; }
-long DMCLR::DMSoft::GetNowDict() { return 0; }
-long DMCLR::DMSoft::Is64Bit() { return 0; }
-long DMCLR::DMSoft::GetColorNum(long x1, long y1, long x2, long y2, String^ color, double sim) { return 0; }
-String^ DMCLR::DMSoft::EnumWindowByProcess(String^ process_name, String^ title, String^ class_name, long filter) { return ""; }
-long DMCLR::DMSoft::GetDictCount(long index) { return 0; }
-long DMCLR::DMSoft::GetLastError() { return 0; }
-String^ DMCLR::DMSoft::GetNetTime() { return ""; }
+String^ DMCLR::DMSoft::FindStrFastEx(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim)
+{
+	return Util::BSTRToString(dm->FindStrFastEx(x1, y1, x2, y2, Util::StringToWchar(str), Util::StringToWchar(color), sim));
+}
+String^ DMCLR::DMSoft::FindStrFastE(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim)
+{
+	return Util::BSTRToString(dm->FindStrFastE(x1, y1, x2, y2, Util::StringToWchar(str), Util::StringToWchar(color), sim));
+}
+long DMCLR::DMSoft::EnableDisplayDebug(long enable_debug)
+{
+	return dm->EnableDisplayDebug(enable_debug);
+}
+long DMCLR::DMSoft::CapturePre(String^ file)
+{
+	return dm->CapturePre(Util::StringToWchar(file));
+}
+long DMCLR::DMSoft::RegEx(String^ code, String^ Ver, String^ ip)
+{
+	return dm->RegEx(Util::StringToWchar(code), Util::StringToWchar(Ver), Util::StringToWchar(ip));
+}
+String^ DMCLR::DMSoft::GetMachineCode()
+{
+	return Util::BSTRToString(dm->GetMachineCode());
+}
+long DMCLR::DMSoft::SetClipboard(String^ data)
+{
+	return dm->SetClipboard(Util::StringToWchar(data));
+}
+String^ DMCLR::DMSoft::GetClipboard()
+{
+	return Util::BSTRToString(dm->GetClipboard());
+}
+long DMCLR::DMSoft::GetNowDict()
+{
+	return dm->GetNowDict();
+}
+long DMCLR::DMSoft::Is64Bit()
+{
+	return dm->Is64Bit();
+}
+long DMCLR::DMSoft::GetColorNum(long x1, long y1, long x2, long y2, String^ color, double sim)
+{
+	return dm->GetColorNum(x1, y1, x2, y2, Util::StringToWchar(color), sim);
+}
+String^ DMCLR::DMSoft::EnumWindowByProcess(String^ process_name, String^ title, String^ class_name, long filter)
+{
+	return Util::BSTRToString(dm->EnumWindowByProcess(Util::StringToWchar(process_name), Util::StringToWchar(title), Util::StringToWchar(class_name), filter));
+}
+long DMCLR::DMSoft::GetDictCount(long index) { return dm->GetDictCount(index); }
+long DMCLR::DMSoft::GetLastError()
+{
+	return dm->GetLastError();
+}
+String^ DMCLR::DMSoft::GetNetTime()
+{
+	return Util::BSTRToString(dm->GetNetTime());
+}
 long DMCLR::DMSoft::EnableGetColorByCapture(long en) { return 0; }
-long DMCLR::DMSoft::CheckUAC() { return 0; }
+long DMCLR::DMSoft::CheckUAC()
+{
+	return dm->CheckUAC();
+}
 long DMCLR::DMSoft::SetUAC(long uac) { return dm->SetUAC(uac); }
-long DMCLR::DMSoft::DisableFontSmooth() { return 0; }
-long DMCLR::DMSoft::CheckFontSmooth() { return 0; }
+long DMCLR::DMSoft::DisableFontSmooth()
+{
+	return dm->DisableFontSmooth();
+}
+long DMCLR::DMSoft::CheckFontSmooth()
+{
+	return dm->CheckFontSmooth();
+}
 long DMCLR::DMSoft::SetDisplayAcceler(long level) { return 0; }
-long DMCLR::DMSoft::FindWindowByProcess(String^ process_name, String^ class_name, String^ title_name) { return 0; }
-long DMCLR::DMSoft::FindWindowByProcessId(long process_id, String^ class_name, String^ title_name) { return 0; }
-String^ DMCLR::DMSoft::ReadIni(String^ section, String^ key, String^ file) { return ""; }
+long DMCLR::DMSoft::FindWindowByProcess(String^ process_name, String^ class_name, String^ title_name)
+{
+	return dm->FindWindowByProcess(Util::StringToWchar(process_name), Util::StringToWchar(class_name), Util::StringToWchar(title_name));
+}
+long DMCLR::DMSoft::FindWindowByProcessId(long process_id, String^ class_name, String^ title_name)
+{
+	return dm->FindWindowByProcessId(process_id, Util::StringToWchar(class_name), Util::StringToWchar(title_name));
+}
+String^ DMCLR::DMSoft::ReadIni(String^ section, String^ key, String^ file)
+{
+	return Util::BSTRToString(dm->ReadIni(Util::StringToWchar(section), Util::StringToWchar(key), Util::StringToWchar(file)));
+}
 long DMCLR::DMSoft::WriteIni(String^ section, String^ key, String^ v, String^ file) { return 0; }
 long DMCLR::DMSoft::RunApp(String^ path, long mode) { return 0; }
-long DMCLR::DMSoft::delay(long mis) { return 0; }
-long DMCLR::DMSoft::FindWindowSuper(String^ spec1, long flag1, long type1, String^ spec2, long flag2, long type2) { return 0; }
+long DMCLR::DMSoft::delay(long mis) { return dm->delay(mis); }
+long DMCLR::DMSoft::FindWindowSuper(String^ spec1, long flag1, long type1, String^ spec2, long flag2, long type2)
+{
+	return dm->FindWindowSuper(Util::StringToWchar(spec1), flag1, type1, Util::StringToWchar(spec2), flag2, type2);
+	return 0;
+}
 String^ DMCLR::DMSoft::ExcludePos(String^ all_pos, long type, long x1, long y1, long x2, long y2) { return ""; }
 String^ DMCLR::DMSoft::FindNearestPos(String^ all_pos, long type, long x, long y) { return ""; }
 String^ DMCLR::DMSoft::SortPosDistance(String^ all_pos, long type, long x, long y) { return ""; }
@@ -310,21 +454,39 @@ String^ DMCLR::DMSoft::FindPicMemEx(long x1, long y1, long x2, long y2, String^ 
 String^ DMCLR::DMSoft::FindPicMemE(long x1, long y1, long x2, long y2, String^ pic_info, String^ delta_color, double sim, long dir) { return ""; }
 String^ DMCLR::DMSoft::AppendPicAddr(String^ pic_info, long addr, long size) { return ""; }
 long DMCLR::DMSoft::WriteFile(String^ file, String^ content) { return 0; }
-long DMCLR::DMSoft::Stop(long id) { return 0; }
+long DMCLR::DMSoft::Stop(long id) { return dm->Stop(id); }
 long DMCLR::DMSoft::SetDictMem(long index, long addr, long size) { return 0; }
 String^ DMCLR::DMSoft::GetNetTimeSafe() { return ""; }
-long DMCLR::DMSoft::ForceUnBindWindow(long hwnd) { return 0; }
+long DMCLR::DMSoft::ForceUnBindWindow(long hwnd)
+{
+	return dm->ForceUnBindWindow(hwnd);
+}
 String^ DMCLR::DMSoft::ReadIniPwd(String^ section, String^ key, String^ file, String^ pwd) { return ""; }
 long DMCLR::DMSoft::WriteIniPwd(String^ section, String^ key, String^ v, String^ file, String^ pwd) { return 0; }
 long DMCLR::DMSoft::DecodeFile(String^ file, String^ pwd) { return 0; }
-long DMCLR::DMSoft::KeyDownChar(String^ key_str) { return 0; }
-long DMCLR::DMSoft::KeyUpChar(String^ key_str) { return 0; }
-long DMCLR::DMSoft::KeyPressChar(String^ key_str) { return 0; }
-long DMCLR::DMSoft::KeyPressStr(String^ key_str, long delay) { return 0; }
+long DMCLR::DMSoft::KeyDownChar(String^ key_str)
+{
+	return dm->KeyDownChar(Util::StringToWchar(key_str));
+}
+long DMCLR::DMSoft::KeyUpChar(String^ key_str)
+{
+	return dm->KeyUpChar(Util::StringToWchar(key_str));
+}
+long DMCLR::DMSoft::KeyPressChar(String^ key_str)
+{
+	return dm->KeyPressChar(Util::StringToWchar(key_str));
+}
+long DMCLR::DMSoft::KeyPressStr(String^ key_str, long delay)
+{
+	return dm->KeyPressStr(Util::StringToWchar(key_str), delay);
+}
 long DMCLR::DMSoft::EnableKeypadPatch(long en) { return 0; }
 long DMCLR::DMSoft::EnableKeypadSync(long en, long time_out) { return 0; }
 long DMCLR::DMSoft::EnableMouseSync(long en, long time_out) { return 0; }
-long DMCLR::DMSoft::DmGuard(long en, String^ type) { return dm->DmGuard(en, Util::StringToWchar(type)); }
+long DMCLR::DMSoft::DmGuard(long en, String^ type)
+{
+	return dm->DmGuard(en, Util::StringToWchar(type));
+}
 long DMCLR::DMSoft::FaqCaptureFromFile(long x1, long y1, long x2, long y2, String^ file, long quality) { return 0; }
 String^ DMCLR::DMSoft::FindIntEx(long hwnd, String^ addr_range, long int_value_min, long int_value_max, long type, long step, long multi_thread, long mode) { return ""; }
 String^ DMCLR::DMSoft::FindFloatEx(long hwnd, String^ addr_range, float float_value_min, float float_value_max, long step, long multi_thread, long mode) { return ""; }
@@ -336,22 +498,57 @@ long DMCLR::DMSoft::EnableRealKeypad(long en) { return 0; }
 long DMCLR::DMSoft::SendStringIme(String^ str) { return 0; }
 long DMCLR::DMSoft::FoobarDrawLine(long hwnd, long x1, long y1, long x2, long y2, String^ color, long style, long width) { return 0; }
 String^ DMCLR::DMSoft::FindStrEx(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim) { return ""; }
-long DMCLR::DMSoft::IsBind(long hwnd) { return 0; }
+long DMCLR::DMSoft::IsBind(long hwnd)
+{
+	return dm->IsBind(hwnd);
+}
 long DMCLR::DMSoft::SetDisplayDelay(long t) { return 0; }
-long DMCLR::DMSoft::GetDmCount() { return 0; }
+long DMCLR::DMSoft::GetDmCount()
+{
+	return dm->GetDmCount();
+}
 long DMCLR::DMSoft::DisableScreenSave() { return 0; }
 long DMCLR::DMSoft::DisablePowerSave() { return 0; }
 long DMCLR::DMSoft::SetMemoryHwndAsProcessId(long en) { return 0; }
 long DMCLR::DMSoft::FindShape(long x1, long y1, long x2, long y2, String^ offset_color, double sim, long dir) { return 0; }
 String^ DMCLR::DMSoft::FindShapeE(long x1, long y1, long x2, long y2, String^ offset_color, double sim, long dir) { return ""; }
 String^ DMCLR::DMSoft::FindShapeEx(long x1, long y1, long x2, long y2, String^ offset_color, double sim, long dir) { return ""; }
-String^ DMCLR::DMSoft::FindStrS(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim) { return ""; }
-String^ DMCLR::DMSoft::FindStrExS(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim) { return ""; }
-String^ DMCLR::DMSoft::FindStrFastS(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim) { return ""; }
-String^ DMCLR::DMSoft::FindStrFastExS(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim) { return ""; }
-String^ DMCLR::DMSoft::FindPicS(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir) { return ""; }
-String^ DMCLR::DMSoft::FindPicExS(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir) { return ""; }
-long DMCLR::DMSoft::ClearDict(long index) { return 0; }
+
+Tuple<long, long, String^>^ DMCLR::DMSoft::FindStrS(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim)
+{
+	VARIANT x, y;
+	auto ret = Util::BSTRToString(dm->FindStrS(x1, y1, x2, y2, Util::StringToWchar(str), Util::StringToWchar(color), sim, &x, &y));
+	return gcnew Tuple<long, long, String^>(x.lVal, y.lVal, ret);
+}
+String^ DMCLR::DMSoft::FindStrExS(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim)
+{
+	return Util::BSTRToString(dm->FindStrExS(x1, y1, x2, y2, Util::StringToWchar(str), Util::StringToWchar(color), sim));
+}
+Tuple<long, long, String^>^ DMCLR::DMSoft::FindStrFastS(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim)
+{
+	VARIANT x, y;
+	auto ret = Util::BSTRToString(dm->FindStrFastS(x1, y1, x2, y2, Util::StringToWchar(str), Util::StringToWchar(color), sim, &x, &y));
+	return gcnew Tuple<long, long, String^>(x.lVal, y.lVal, ret);
+}
+
+String^ DMCLR::DMSoft::FindStrFastExS(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim)
+{
+	return Util::BSTRToString(dm->FindStrFastExS(x1, y1, x2, y2, Util::StringToWchar(str), Util::StringToWchar(color), sim));
+}
+Tuple<long, long, String^>^ DMCLR::DMSoft::FindPicS(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir)
+{
+	VARIANT x, y;
+	auto ret = Util::BSTRToString(dm->FindPicS(x1, y1, x2, y2, Util::StringToWchar(pic_name), Util::StringToWchar(delta_color), sim, dir, &x, &y));
+	return gcnew Tuple<long, long, String^>(x.lVal, y.lVal, ret);
+}
+String^ DMCLR::DMSoft::FindPicExS(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir)
+{
+	return Util::BSTRToString(dm->FindPicExS(x1, y1, x2, y2, Util::StringToWchar(pic_name), Util::StringToWchar(delta_color), sim, dir));
+}
+long DMCLR::DMSoft::ClearDict(long index)
+{
+	return dm->ClearDict(index);
+}
 String^ DMCLR::DMSoft::GetMachineCodeNoMac() { return ""; }
 long DMCLR::DMSoft::GetClientRect(long hwnd) { return 0; }
 long DMCLR::DMSoft::EnableFakeActive(long en) { return 0; }
@@ -378,7 +575,10 @@ long DMCLR::DMSoft::CreateFolder(String^ folder_name) { return 0; }
 long DMCLR::DMSoft::DeleteFolder(String^ folder_name) { return 0; }
 long DMCLR::DMSoft::GetFileLength(String^ file) { return 0; }
 String^ DMCLR::DMSoft::ReadFile(String^ file) { return ""; }
-long DMCLR::DMSoft::WaitKey(long key_code, long time_out) { return 0; }
+long DMCLR::DMSoft::WaitKey(long key_code, long time_out)
+{
+	return dm->WaitKey(key_code, time_out);
+}
 long DMCLR::DMSoft::DeleteIni(String^ section, String^ key, String^ file) { return 0; }
 long DMCLR::DMSoft::DeleteIniPwd(String^ section, String^ key, String^ file, String^ pwd) { return 0; }
 long DMCLR::DMSoft::EnableSpeedDx(long en) { return 0; }
@@ -396,8 +596,14 @@ String^ DMCLR::DMSoft::EnumWindowSuper(String^ spec1, long flag1, long type1, St
 long DMCLR::DMSoft::DownloadFile(String^ url, String^ save_file, long timeout) { return 0; }
 long DMCLR::DMSoft::EnableKeypadMsg(long en) { return 0; }
 long DMCLR::DMSoft::EnableMouseMsg(long en) { return 0; }
-long DMCLR::DMSoft::RegNoMac(String^ code, String^ Ver) { return 0; }
-long DMCLR::DMSoft::RegExNoMac(String^ code, String^ Ver, String^ ip) { return 0; }
+long DMCLR::DMSoft::RegNoMac(String^ code, String^ Ver)
+{
+	return dm->RegNoMac(Util::StringToWchar(code), Util::StringToWchar(Ver));
+}
+long DMCLR::DMSoft::RegExNoMac(String^ code, String^ Ver, String^ ip)
+{
+	return dm->RegExNoMac(Util::StringToWchar(code), Util::StringToWchar(Ver), Util::StringToWchar(ip));
+}
 long DMCLR::DMSoft::SetEnumWindowDelay(long delay) { return 0; }
 long DMCLR::DMSoft::FindMulColor(long x1, long y1, long x2, long y2, String^ color, double sim) { return 0; }
 String^ DMCLR::DMSoft::GetDict(long index, long font_index) { return ""; }
@@ -438,17 +644,38 @@ String^ DMCLR::DMSoft::EnumWindowByProcessId(long pid, String^ title, String^ cl
 String^ DMCLR::DMSoft::GetDisplayInfo() { return ""; }
 long DMCLR::DMSoft::EnableFontSmooth() { return 0; }
 String^ DMCLR::DMSoft::OcrExOne(long x1, long y1, long x2, long y2, String^ color, double sim) { return ""; }
-long DMCLR::DMSoft::SetAero(long en) { return 0; }
+long DMCLR::DMSoft::SetAero(long en)
+{
+	return dm->SetAero(en);
+}
 long DMCLR::DMSoft::FoobarSetTrans(long hwnd, long trans, String^ color, double sim) { return 0; }
-long DMCLR::DMSoft::EnablePicCache(long en) { return 0; }
-long DMCLR::DMSoft::FaqIsPosted() { return 0; }
-long DMCLR::DMSoft::LoadPicByte(long addr, long size, String^ name) { return 0; }
-long DMCLR::DMSoft::MiddleDown() { return 0; }
-long DMCLR::DMSoft::MiddleUp() { return 0; }
+long DMCLR::DMSoft::EnablePicCache(long en)
+{
+	return dm->EnablePicCache(en);
+}
+long DMCLR::DMSoft::FaqIsPosted() { return dm->FaqIsPosted(); }
+long DMCLR::DMSoft::LoadPicByte(long addr, long size, String^ name)
+{
+	return dm->LoadPicByte(addr, size, Util::StringToWchar(name));
+}
+long DMCLR::DMSoft::MiddleDown()
+{
+	return dm->MiddleDown();
+}
+long DMCLR::DMSoft::MiddleUp()
+{
+	return dm->MiddleUp();
+}
 long DMCLR::DMSoft::FaqCaptureString(String^ str) { return 0; }
 long DMCLR::DMSoft::VirtualProtectEx(long hwnd, long addr, long size, long type, long old_protect) { return 0; }
-long DMCLR::DMSoft::SetMouseSpeed(long speed) { return 0; }
-long DMCLR::DMSoft::GetMouseSpeed() { return 0; }
+long DMCLR::DMSoft::SetMouseSpeed(long speed)
+{
+	return dm->SetMouseSpeed(speed);
+}
+long DMCLR::DMSoft::GetMouseSpeed()
+{
+	return dm->GetMouseSpeed();
+}
 long DMCLR::DMSoft::EnableMouseAccuracy(long en) { return 0; }
 long DMCLR::DMSoft::SetExcludeRegion(long type, String^ info) { return 0; }
 long DMCLR::DMSoft::EnableShareDict(long en) { return 0; }
@@ -484,25 +711,86 @@ long DMCLR::DMSoft::GetModuleSize(long hwnd, String^ module_name) { return 0; }
 long DMCLR::DMSoft::IsSurrpotVt() { return 0; }
 String^ DMCLR::DMSoft::GetDiskModel(long index) { return ""; }
 String^ DMCLR::DMSoft::GetDiskReversion(long index) { return ""; }
-long DMCLR::DMSoft::EnableFindPicMultithread(long en) { return 0; }
-long DMCLR::DMSoft::GetCpuUsage() { return 0; }
-long DMCLR::DMSoft::GetMemoryUsage() { return 0; }
-String^ DMCLR::DMSoft::Hex32(long v) { return ""; }
-String^ DMCLR::DMSoft::Hex64(long v) { return ""; }
-long DMCLR::DMSoft::GetWindowThreadId(long hwnd) { return 0; }
-long DMCLR::DMSoft::DmGuardExtract(String^ type, String^ path) { return 0; }
-long DMCLR::DMSoft::DmGuardLoadCustom(String^ type, String^ path) { return 0; }
-long DMCLR::DMSoft::SetShowAsmErrorMsg(long show) { return 0; }
-String^ DMCLR::DMSoft::GetSystemInfo(String^ type, long method) { return ""; }
-long DMCLR::DMSoft::SetFindPicMultithreadCount(long count) { return 0; }
-long DMCLR::DMSoft::FindPicSim(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, long sim, long dir) { return 0; }
-String^ DMCLR::DMSoft::FindPicSimEx(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, long sim, long dir) { return ""; }
-long DMCLR::DMSoft::FindPicSimMem(long x1, long y1, long x2, long y2, String^ pic_info, String^ delta_color, long sim, long dir) { return 0; }
-String^ DMCLR::DMSoft::FindPicSimMemEx(long x1, long y1, long x2, long y2, String^ pic_info, String^ delta_color, long sim, long dir) { return ""; }
-String^ DMCLR::DMSoft::FindPicSimE(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, long sim, long dir) { return ""; }
-String^ DMCLR::DMSoft::FindPicSimMemE(long x1, long y1, long x2, long y2, String^ pic_info, String^ delta_color, long sim, long dir) { return ""; }
-long DMCLR::DMSoft::SetInputDm(long input_dm, long rx, long ry) { return 0; }
-long DMCLR::DMSoft::SetFindPicMultithreadLimit(long limit) { return 0; }
+long DMCLR::DMSoft::EnableFindPicMultithread(long en)
+{
+	return dm->EnableFindPicMultithread(en);
+}
+long DMCLR::DMSoft::GetCpuUsage()
+{
+	return dm->GetCpuUsage();
+}
+long DMCLR::DMSoft::GetMemoryUsage()
+{
+	return dm->GetMemoryUsage();
+}
+String^ DMCLR::DMSoft::Hex32(long v)
+{
+	return Util::BSTRToString(dm->Hex32(v));
+}
+String^ DMCLR::DMSoft::Hex64(long v)
+{
+	return Util::BSTRToString(dm->Hex64(v));
+}
+long DMCLR::DMSoft::GetWindowThreadId(long hwnd)
+{
+	return dm->GetWindowThreadId(hwnd);
+}
+long DMCLR::DMSoft::DmGuardExtract(String^ type, String^ path)
+{
+	return dm->DmGuardExtract(Util::StringToWchar(type), Util::StringToWchar(path));
+}
+long DMCLR::DMSoft::DmGuardLoadCustom(String^ type, String^ path)
+{
+	return dm->DmGuardLoadCustom(Util::StringToWchar(type), Util::StringToWchar(path));
+}
+long DMCLR::DMSoft::SetShowAsmErrorMsg(long show)
+{
+	return dm->SetShowAsmErrorMsg(show);
+}
+String^ DMCLR::DMSoft::GetSystemInfo(String^ type, long method)
+{
+	return Util::BSTRToString(dm->GetSystemInfo(Util::StringToWchar(type), method));
+}
+long DMCLR::DMSoft::SetFindPicMultithreadCount(long count)
+{
+	return dm->SetFindPicMultithreadCount(count);
+}
+Tuple<long, long, int>^ DMCLR::DMSoft::FindPicSim(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, long sim, long dir)
+{
+	VARIANT x, y;
+	int ret = dm->FindPicSim(x1, y1, x2, y2, Util::StringToWchar(pic_name), Util::StringToWchar(delta_color), sim, dir, &x, &y);
+	return gcnew Tuple<long, long, int>(x.lVal, y.lVal, ret);
+}
+String^ DMCLR::DMSoft::FindPicSimEx(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, long sim, long dir)
+{
+	return Util::BSTRToString(dm->FindPicSimEx(x1, y1, x2, y2, Util::StringToWchar(pic_name), Util::StringToWchar(delta_color), sim, dir));
+}
+Tuple<long, long, int>^ DMCLR::DMSoft::FindPicSimMem(long x1, long y1, long x2, long y2, String^ pic_info, String^ delta_color, long sim, long dir)
+{
+	VARIANT x, y;
+	int ret= dm->FindPicSimMem(x1, y1, x2, y2, Util::StringToWchar(pic_info), Util::StringToWchar(delta_color), sim, dir, &x, &y);
+	return gcnew Tuple<long, long, int>(x.lVal, y.lVal, ret);
+}
+String^ DMCLR::DMSoft::FindPicSimMemEx(long x1, long y1, long x2, long y2, String^ pic_info, String^ delta_color, long sim, long dir)
+{
+	return Util::BSTRToString(dm->FindPicSimMemEx(x1, y1, x2, y2, Util::StringToWchar(pic_info), Util::StringToWchar(delta_color), sim, dir));
+}
+String^ DMCLR::DMSoft::FindPicSimE(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, long sim, long dir)
+{
+	return Util::BSTRToString(dm->FindPicSimE(x1, y1, x2, y2, Util::StringToWchar(pic_name), Util::StringToWchar(delta_color), sim, dir));
+}
+String^ DMCLR::DMSoft::FindPicSimMemE(long x1, long y1, long x2, long y2, String^ pic_info, String^ delta_color, long sim, long dir)
+{
+	return Util::BSTRToString(dm->FindPicSimMemE(x1, y1, x2, y2, Util::StringToWchar(pic_info), Util::StringToWchar(delta_color), sim, dir));
+}
+long DMCLR::DMSoft::SetInputDm(long input_dm, long rx, long ry)
+{
+	return dm->SetInputDm(input_dm, rx, ry);
+}
+long DMCLR::DMSoft::SetFindPicMultithreadLimit(long limit)
+{
+	return dm->SetFindPicMultithreadLimit(limit);
+}
 
 
 DMCLR::DMSoft::DMSoft()
