@@ -104,17 +104,48 @@ long DMCLR::DMSoft::RightDown() { return dm->RightDown(); }
 long DMCLR::DMSoft::RightUp() { return dm->RightUp(); }
 long DMCLR::DMSoft::MoveTo(long x, long y) { return dm->MoveTo(x, y); }
 long DMCLR::DMSoft::MoveR(long rx, long ry) { return dm->MoveR(rx, rx); }
-String^ DMCLR::DMSoft::GetColor(long x, long y) { return ""; }
-String^ DMCLR::DMSoft::GetColorBGR(long x, long y) { return ""; }
-String^ DMCLR::DMSoft::RGB2BGR(String^ rgb_color) { return ""; }
-String^ DMCLR::DMSoft::BGR2RGB(String^ bgr_color) { return ""; }
+String^ DMCLR::DMSoft::GetColor(long x, long y)
+{
+	auto ret = dm->GetColor(x, y);
+	return Util::BSTRToString(ret);
+}
+
+String^ DMCLR::DMSoft::GetColorBGR(long x, long y)
+{
+	auto ret = dm->GetColorBGR(x, y);
+	return Util::BSTRToString(ret);
+}
+
+String^ DMCLR::DMSoft::RGB2BGR(String^ rgb_color)
+{
+	auto ret = dm->RGB2BGR(Util::StringToWchar(rgb_color));
+	return Util::BSTRToString(ret);
+}
+String^ DMCLR::DMSoft::BGR2RGB(String^ bgr_color)
+{
+	auto ret = dm->BGR2RGB(Util::StringToWchar(bgr_color));
+	return Util::BSTRToString(ret);
+}
 long DMCLR::DMSoft::UnBindWindow() { return dm->UnBindWindow(); }
-long DMCLR::DMSoft::CmpColor(long x, long y, String^ color, double sim) { return 0; }
+long DMCLR::DMSoft::CmpColor(long x, long y, String^ color, double sim)
+{
+	return dm->CmpColor(x, y, Util::StringToWchar(color), sim);
+}
 long DMCLR::DMSoft::ClientToScreen(long hwnd) { return 0; }
 long DMCLR::DMSoft::ScreenToClient(long hwnd) { return 0; }
-long DMCLR::DMSoft::ShowScrMsg(long x1, long y1, long x2, long y2, String^ msg, String^ color) { return 0; }
-long DMCLR::DMSoft::SetMinRowGap(long row_gap) { return 0; }
-long DMCLR::DMSoft::SetMinColGap(long col_gap) { return 0; }
+long DMCLR::DMSoft::ShowScrMsg(long x1, long y1, long x2, long y2, String^ msg, String^ color)
+{
+	return dm->ShowScrMsg(x1, y1, x2, y2, Util::StringToWchar(msg), Util::StringToWchar(color));
+}
+long DMCLR::DMSoft::SetMinRowGap(long row_gap)
+{
+	return dm->SetMinRowGap(row_gap);
+}
+long DMCLR::DMSoft::SetMinColGap(long col_gap)
+{
+	return dm->SetMinColGap(col_gap);
+}
+
 Tuple<long, long, int>^ DMCLR::DMSoft::FindColor(long x1, long y1, long x2, long y2, String^ color, double sim, long dir)
 {
 	long ret;
@@ -128,57 +159,88 @@ String^ DMCLR::DMSoft::FindColorEx(long x1, long y1, long x2, long y2, String^ c
 	auto ret = dm->FindColorEx(x1, y1, x2, y2, Util::StringToWchar(color), sim, dir);
 	return Util::BSTRToString(ret);
 }
-long DMCLR::DMSoft::SetWordLineHeight(long line_height) { return 0; }
-long DMCLR::DMSoft::SetWordGap(long word_gap) { return 0; }
-long DMCLR::DMSoft::SetRowGapNoDict(long row_gap) { return 0; }
-long DMCLR::DMSoft::SetColGapNoDict(long col_gap) { return 0; }
-long DMCLR::DMSoft::SetWordLineHeightNoDict(long line_height) { return 0; }
-long DMCLR::DMSoft::SetWordGapNoDict(long word_gap) { return 0; }
-long DMCLR::DMSoft::GetWordResultCount(String^ str) { return 0; }
+long DMCLR::DMSoft::SetWordLineHeight(long line_height)
+{
+	return dm->SetWordLineHeight(line_height);
+}
+long DMCLR::DMSoft::SetWordGap(long word_gap)
+{
+	return dm->SetWordGap(word_gap);
+}
+long DMCLR::DMSoft::SetRowGapNoDict(long row_gap) { return dm->SetRowGapNoDict(row_gap); }
+long DMCLR::DMSoft::SetColGapNoDict(long col_gap) { return dm->SetColGapNoDict(col_gap); }
+long DMCLR::DMSoft::SetWordLineHeightNoDict(long line_height) { return dm->SetWordLineHeightNoDict(line_height); }
+long DMCLR::DMSoft::SetWordGapNoDict(long word_gap) { return dm->SetWordGapNoDict(word_gap); }
+long DMCLR::DMSoft::GetWordResultCount(String^ str) { return dm->GetWordResultCount(Util::StringToWchar(str)); }
 Tuple<long, long, int>^ DMCLR::DMSoft::GetWordResultPos(String^ str, long index)
 {
 	VARIANT x, y;
-	auto ret = dm->GetWordResultPos(Util::StringToWchar(str),index,&x,&y);
-	return gcnew Tuple<long, long, int>(x.lVal,y.lVal,ret);
+	auto ret = dm->GetWordResultPos(Util::StringToWchar(str), index, &x, &y);
+	return gcnew Tuple<long, long, int>(x.lVal, y.lVal, ret);
 }
 String^ DMCLR::DMSoft::GetWordResultStr(String^ str, long index)
-{ 
-	auto ret = dm->GetWordResultStr(Util::StringToWchar(str),index);
+{
+	auto ret = dm->GetWordResultStr(Util::StringToWchar(str), index);
 	return Util::BSTRToString(ret);
 }
-String^ DMCLR::DMSoft::GetWords(long x1, long y1, long x2, long y2, String^ color, double sim) { return ""; }
-String^ DMCLR::DMSoft::GetWordsNoDict(long x1, long y1, long x2, long y2, String^ color) { return ""; }
+String^ DMCLR::DMSoft::GetWords(long x1, long y1, long x2, long y2, String^ color, double sim)
+{
+	return Util::BSTRToString(dm->GetWords(x1, y1, x2, y2, Util::StringToWchar(color), sim));
+}
+String^ DMCLR::DMSoft::GetWordsNoDict(long x1, long y1, long x2, long y2, String^ color)
+{
+	return Util::BSTRToString(dm->GetWordsNoDict(x1, y1, x2, y2, Util::StringToWchar(color)));
+}
 long DMCLR::DMSoft::SetShowErrorMsg(long show) { return dm->SetShowErrorMsg(show); }
-long DMCLR::DMSoft::GetClientSize(long hwnd) { return 0; }
-long DMCLR::DMSoft::MoveWindow(long hwnd, long x, long y) { return 0; }
-String^ DMCLR::DMSoft::GetColorHSV(long x, long y) { return ""; }
-String^ DMCLR::DMSoft::GetAveRGB(long x1, long y1, long x2, long y2) { return ""; }
-String^ DMCLR::DMSoft::GetAveHSV(long x1, long y1, long x2, long y2) { return ""; }
-long DMCLR::DMSoft::GetForegroundWindow() { return 0; }
-long DMCLR::DMSoft::GetForegroundFocus() { return 0; }
-long DMCLR::DMSoft::GetMousePointWindow() { return 0; }
-long DMCLR::DMSoft::GetPointWindow(long x, long y) { return 0; }
-String^ DMCLR::DMSoft::EnumWindow(long parent, String^ title, String^ class_name, long filter) { return ""; }
-long DMCLR::DMSoft::GetWindowState(long hwnd, long flag) { return 0; }
-long DMCLR::DMSoft::GetWindow(long hwnd, long flag) { return 0; }
-long DMCLR::DMSoft::GetSpecialWindow(long flag) { return 0; }
-long DMCLR::DMSoft::SetWindowText(long hwnd, String^ text) { return 0; }
-long DMCLR::DMSoft::SetWindowSize(long hwnd, long width, long height) { return 0; }
-long DMCLR::DMSoft::GetWindowRect(long hwnd) { return 0; }
-String^ DMCLR::DMSoft::GetWindowTitle(long hwnd) { return ""; }
-String^ DMCLR::DMSoft::GetWindowClass(long hwnd) { return ""; }
-long DMCLR::DMSoft::SetWindowState(long hwnd, long flag) { return 0; }
+Tuple<long, long, int>^ DMCLR::DMSoft::GetClientSize(long hwnd)
+{
+	VARIANT x, y;
+	auto ret = dm->GetClientSize(hwnd, &x, &y);
+	return gcnew Tuple<long, long, int>(x.lVal, y.lVal, ret);
+}
+long DMCLR::DMSoft::MoveWindow(long hwnd, long x, long y) { return dm->MoveWindow(hwnd, x, y); }
+String^ DMCLR::DMSoft::GetColorHSV(long x, long y) { return Util::BSTRToString(dm->GetColorHSV(x, y)); }
+String^ DMCLR::DMSoft::GetAveRGB(long x1, long y1, long x2, long y2) { return Util::BSTRToString(dm->GetAveRGB(x1, y1, x2, y2)); }
+String^ DMCLR::DMSoft::GetAveHSV(long x1, long y1, long x2, long y2) { return Util::BSTRToString(dm->GetAveHSV(x1, y1, x2, y2)); }
+long DMCLR::DMSoft::GetForegroundWindow() { return dm->GetForegroundWindow(); }
+long DMCLR::DMSoft::GetForegroundFocus() { return dm->GetForegroundFocus(); }
+long DMCLR::DMSoft::GetMousePointWindow() { return dm->GetMousePointWindow(); }
+long DMCLR::DMSoft::GetPointWindow(long x, long y) { return dm->GetPointWindow(x, y); }
+String^ DMCLR::DMSoft::EnumWindow(long parent, String^ title, String^ class_name, long filter)
+{
+	return Util::BSTRToString(dm->EnumWindow(parent, Util::StringToWchar(title), Util::StringToWchar(class_name), filter));
+}
+long DMCLR::DMSoft::GetWindowState(long hwnd, long flag) { return dm->GetWindowState(hwnd, flag); }
+long DMCLR::DMSoft::GetWindow(long hwnd, long flag) { return dm->GetWindow(hwnd, flag); }
+long DMCLR::DMSoft::GetSpecialWindow(long flag) { return dm->GetSpecialWindow(flag); }
+long DMCLR::DMSoft::SetWindowText(long hwnd, String^ text) { return dm->SetWindowTextW(hwnd, Util::StringToWchar(text)); }
+long DMCLR::DMSoft::SetWindowSize(long hwnd, long width, long height) { return dm->SetWindowSize(hwnd, width, height); }
+Tuple<long, long, long, long, int>^ DMCLR::DMSoft::GetWindowRect(long hwnd)
+{
+	VARIANT x1, y1, x2, y2;
+	auto ret = dm->GetWindowRect(hwnd, &x1, &y1, &x2, &y2);
+	return gcnew Tuple<long, long, long, long, int>(x1.lVal, y1.lVal, x2.lVal, y2.lVal, ret);
+}
+String^ DMCLR::DMSoft::GetWindowTitle(long hwnd) { return Util::BSTRToString(dm->GetWindowTitle(hwnd)); }
+String^ DMCLR::DMSoft::GetWindowClass(long hwnd) { return Util::BSTRToString(dm->GetWindowClass(hwnd)); }
+long DMCLR::DMSoft::SetWindowState(long hwnd, long flag) { return dm->SetWindowState(hwnd, flag); }
 long DMCLR::DMSoft::CreateFoobarRect(long hwnd, long x, long y, long w, long h) { return 0; }
 long DMCLR::DMSoft::CreateFoobarRoundRect(long hwnd, long x, long y, long w, long h, long rw, long rh) { return 0; }
 long DMCLR::DMSoft::CreateFoobarEllipse(long hwnd, long x, long y, long w, long h) { return 0; }
 long DMCLR::DMSoft::CreateFoobarCustom(long hwnd, long x, long y, String^ pic, String^ trans_color, double sim) { return 0; }
 long DMCLR::DMSoft::FoobarFillRect(long hwnd, long x1, long y1, long x2, long y2, String^ color) { return 0; }
-long DMCLR::DMSoft::FoobarDrawText(long hwnd, long x, long y, long w, long h, String^ text, String^ color, long align) { return 0; }
+long DMCLR::DMSoft::FoobarDrawText(long hwnd, long x, long y, long w, long h, String^ text, String^ color, long align)
+{
+	return 0;
+}
 long DMCLR::DMSoft::FoobarDrawPic(long hwnd, long x, long y, String^ pic, String^ trans_color) { return 0; }
-long DMCLR::DMSoft::FoobarUpdate(long hwnd) { return 0; }
-long DMCLR::DMSoft::FoobarLock(long hwnd) { return 0; }
-long DMCLR::DMSoft::FoobarUnlock(long hwnd) { return 0; }
-long DMCLR::DMSoft::FoobarSetFont(long hwnd, String^ font_name, long size, long flag) { return 0; }
+long DMCLR::DMSoft::FoobarUpdate(long hwnd) { return dm->FoobarUpdate(hwnd); }
+long DMCLR::DMSoft::FoobarLock(long hwnd) { return dm->FoobarLock(hwnd); }
+long DMCLR::DMSoft::FoobarUnlock(long hwnd) { return dm->FoobarUnlock(hwnd); }
+long DMCLR::DMSoft::FoobarSetFont(long hwnd, String^ font_name, long size, long flag)
+{
+	return dm->FoobarSetFont(hwnd, Util::StringToWchar(font_name), size, flag);
+}
 long DMCLR::DMSoft::FoobarTextRect(long hwnd, long x, long y, long w, long h) { return 0; }
 long DMCLR::DMSoft::FoobarPrintText(long hwnd, String^ text, String^ color) { return 0; }
 long DMCLR::DMSoft::FoobarClearText(long hwnd) { return 0; }
@@ -777,7 +839,7 @@ String^ DMCLR::DMSoft::FindPicSimEx(long x1, long y1, long x2, long y2, String^ 
 Tuple<long, long, int>^ DMCLR::DMSoft::FindPicSimMem(long x1, long y1, long x2, long y2, String^ pic_info, String^ delta_color, long sim, long dir)
 {
 	VARIANT x, y;
-	int ret= dm->FindPicSimMem(x1, y1, x2, y2, Util::StringToWchar(pic_info), Util::StringToWchar(delta_color), sim, dir, &x, &y);
+	int ret = dm->FindPicSimMem(x1, y1, x2, y2, Util::StringToWchar(pic_info), Util::StringToWchar(delta_color), sim, dir, &x, &y);
 	return gcnew Tuple<long, long, int>(x.lVal, y.lVal, ret);
 }
 String^ DMCLR::DMSoft::FindPicSimMemEx(long x1, long y1, long x2, long y2, String^ pic_info, String^ delta_color, long sim, long dir)

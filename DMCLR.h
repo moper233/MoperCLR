@@ -71,7 +71,7 @@ namespace DMCLR {
 		String^ GetWords(long x1, long y1, long x2, long y2, String^ color, double sim);
 		String^ GetWordsNoDict(long x1, long y1, long x2, long y2, String^ color);
 		long SetShowErrorMsg(long show);
-		long GetClientSize(long hwnd);
+		Tuple<long, long, int>^ GetClientSize(long hwnd);
 		long MoveWindow(long hwnd, long x, long y);
 		String^ GetColorHSV(long x, long y);
 		String^ GetAveRGB(long x1, long y1, long x2, long y2);
@@ -86,7 +86,7 @@ namespace DMCLR {
 		long GetSpecialWindow(long flag);
 		long SetWindowText(long hwnd, String^ text);
 		long SetWindowSize(long hwnd, long width, long height);
-		long GetWindowRect(long hwnd);
+		Tuple<long, long, long, long, int>^ GetWindowRect(long hwnd);
 		String^ GetWindowTitle(long hwnd);
 		String^ GetWindowClass(long hwnd);
 		long SetWindowState(long hwnd, long flag);
