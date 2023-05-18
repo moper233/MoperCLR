@@ -11,10 +11,10 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyConfigurationAttribute(L"")];
 [assembly:AssemblyCompanyAttribute(L"")];
 [assembly:AssemblyProductAttribute(L"MoperCLR")];
-[assembly:AssemblyCopyrightAttribute(L"版权所有(c)  2023")];
+[assembly:AssemblyCopyrightAttribute(L"十三仔 版权所有(c)  2023")];
 [assembly:AssemblyTrademarkAttribute(L"")];
 [assembly:AssemblyCultureAttribute(L"")];
 
-[assembly:AssemblyVersionAttribute(L"1.0.*")];
+[assembly:AssemblyVersionAttribute(L"1.1.1")];
 
 [assembly:ComVisible(false)];

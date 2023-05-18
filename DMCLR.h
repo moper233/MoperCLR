@@ -7,6 +7,7 @@
 #undef FindWindow
 #undef FindWindowEx
 #undef SetWindowText
+#undef GetCommandLine
 
 using namespace std;
 using namespace System;
@@ -52,8 +53,8 @@ namespace DMCLR {
 		String^ BGR2RGB(String^ bgr_color);
 		long UnBindWindow();
 		long CmpColor(long x, long y, String^ color, double sim);
-		long ClientToScreen(long hwnd);
-		long ScreenToClient(long hwnd);
+		Tuple<long, long, int>^ ClientToScreen(long hwnd);
+		Tuple<long, long, int>^ ScreenToClient(long hwnd);
 		long ShowScrMsg(long x1, long y1, long x2, long y2, String^ msg, String^ color);
 		long SetMinRowGap(long row_gap);
 		long SetMinColGap(long col_gap);
@@ -130,14 +131,14 @@ namespace DMCLR {
 		Tuple<long, long, int>^ FindPic(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir);
 		String^ FindPicEx(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir);
 		long SetClientSize(long hwnd, long width, long height);
-		long ReadInt(long hwnd, String^ addr, long type);
+		long long ReadInt(long hwnd, String^ addr, long type);
 		float ReadFloat(long hwnd, String^ addr);
 		double ReadDouble(long hwnd, String^ addr);
 		String^ FindInt(long hwnd, String^ addr_range, long int_value_min, long int_value_max, long type);
 		String^ FindFloat(long hwnd, String^ addr_range, float float_value_min, float float_value_max);
 		String^ FindDouble(long hwnd, String^ addr_range, double double_value_min, double double_value_max);
 		String^ FindString(long hwnd, String^ addr_range, String^ string_value, long type);
-		long GetModuleBaseAddr(long hwnd, String^ module_name);
+		long long GetModuleBaseAddr(long hwnd, String^ module_name);
 		String^ MoveToEx(long x, long y, long w, long h);
 		String^ MatchPicName(String^ pic_name);
 		long AddDict(long index, String^ dict_info);
@@ -149,8 +150,8 @@ namespace DMCLR {
 		long WriteString(long hwnd, String^ addr, long type, String^ v);
 		long AsmAdd(String^ asm_ins);
 		long AsmClear();
-		long AsmCall(long hwnd, long mode);
-		long FindMultiColor(long x1, long y1, long x2, long y2, String^ first_color, String^ offset_color, double sim, long dir);
+		long long AsmCall(long hwnd, long mode);
+		Tuple<long, long, int>^ FindMultiColor(long x1, long y1, long x2, long y2, String^ first_color, String^ offset_color, double sim, long dir);
 		String^ FindMultiColorEx(long x1, long y1, long x2, long y2, String^ first_color, String^ offset_color, double sim, long dir);
 		String^ Assemble(long base_addr, long is_64bit);
 		String^ DisAssemble(String^ asm_code, long base_addr, long is_64bit);
@@ -197,7 +198,7 @@ namespace DMCLR {
 		String^ FaqFetch();
 		String^ FetchWord(long x1, long y1, long x2, long y2, String^ color, String^ word);
 		long CaptureJpg(long x1, long y1, long x2, long y2, String^ file, long quality);
-		long FindStrWithFont(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim, String^ font_name, long font_size, long flag);
+		Tuple<long, long, int>^ FindStrWithFont(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim, String^ font_name, long font_size, long flag);
 		String^ FindStrWithFontE(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim, String^ font_name, long font_size, long flag);
 		String^ FindStrWithFontEx(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim, String^ font_name, long font_size, long flag);
 		String^ GetDictInfo(String^ str, String^ font_name, long font_size, long flag);
@@ -210,7 +211,7 @@ namespace DMCLR {
 		long CapturePng(long x1, long y1, long x2, long y2, String^ file);
 		long CaptureGif(long x1, long y1, long x2, long y2, String^ file, long delay, long time);
 		long ImageToBmp(String^ pic_name, String^ bmp_name);
-		long FindStrFast(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim);
+		Tuple<long, long, int>^ FindStrFast(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim);
 		String^ FindStrFastEx(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim);
 		String^ FindStrFastE(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim);
 		long EnableDisplayDebug(long enable_debug);
@@ -242,7 +243,7 @@ namespace DMCLR {
 		String^ ExcludePos(String^ all_pos, long type, long x1, long y1, long x2, long y2);
 		String^ FindNearestPos(String^ all_pos, long type, long x, long y);
 		String^ SortPosDistance(String^ all_pos, long type, long x, long y);
-		long FindPicMem(long x1, long y1, long x2, long y2, String^ pic_info, String^ delta_color, double sim, long dir);
+		Tuple<long, long, int>^ FindPicMem(long x1, long y1, long x2, long y2, String^ pic_info, String^ delta_color, double sim, long dir);
 		String^ FindPicMemEx(long x1, long y1, long x2, long y2, String^ pic_info, String^ delta_color, double sim, long dir);
 		String^ FindPicMemE(long x1, long y1, long x2, long y2, String^ pic_info, String^ delta_color, double sim, long dir);
 		String^ AppendPicAddr(String^ pic_info, long addr, long size);
@@ -279,7 +280,7 @@ namespace DMCLR {
 		long DisableScreenSave();
 		long DisablePowerSave();
 		long SetMemoryHwndAsProcessId(long en);
-		long FindShape(long x1, long y1, long x2, long y2, String^ offset_color, double sim, long dir);
+		Tuple<long, long, int>^ FindShape(long x1, long y1, long x2, long y2, String^ offset_color, double sim, long dir);
 		String^ FindShapeE(long x1, long y1, long x2, long y2, String^ offset_color, double sim, long dir);
 		String^ FindShapeEx(long x1, long y1, long x2, long y2, String^ offset_color, double sim, long dir);
 		Tuple<long, long, String^>^ FindStrS(long x1, long y1, long x2, long y2, String^ str, String^ color, double sim);
@@ -290,7 +291,7 @@ namespace DMCLR {
 		String^ FindPicExS(long x1, long y1, long x2, long y2, String^ pic_name, String^ delta_color, double sim, long dir);
 		long ClearDict(long index);
 		String^ GetMachineCodeNoMac();
-		long GetClientRect(long hwnd);
+		Tuple<long, long, long, long, int>^ GetClientRect(long hwnd);
 		long EnableFakeActive(long en);
 		long GetScreenDataBmp(long x1, long y1, long x2, long y2);
 		long EncodeFile(String^ file, String^ pwd);
@@ -339,14 +340,14 @@ namespace DMCLR {
 		long FoobarStopGif(long hwnd, long x, long y, String^ pic_name);
 		long FreeProcessMemory(long hwnd);
 		String^ ReadFileData(String^ file, long start_pos, long end_pos);
-		long VirtualAllocEx(long hwnd, long addr, long size, long type);
+		long long VirtualAllocEx(long hwnd, long addr, long size, long type);
 		long VirtualFreeEx(long hwnd, long addr);
 		String^ GetCommandLine(long hwnd);
 		long TerminateProcess(long pid);
 		String^ GetNetTimeByIp(String^ ip);
 		String^ EnumProcess(String^ name);
 		String^ GetProcessInfo(long pid);
-		long ReadIntAddr(long hwnd, long addr, long type);
+		long long ReadIntAddr(long hwnd, long addr, long type);
 		String^ ReadDataAddr(long hwnd, long addr, long len);
 		double ReadDoubleAddr(long hwnd, long addr);
 		float ReadFloatAddr(long hwnd, long addr);
@@ -357,7 +358,7 @@ namespace DMCLR {
 		long WriteIntAddr(long hwnd, long addr, long type, long v);
 		long WriteStringAddr(long hwnd, long addr, long type, String^ v);
 		long Delays(long min_s, long max_s);
-		long FindColorBlock(long x1, long y1, long x2, long y2, String^ color, double sim, long count, long width, long height);
+		Tuple<long, long, int>^ FindColorBlock(long x1, long y1, long x2, long y2, String^ color, double sim, long count, long width, long height);
 		String^ FindColorBlockEx(long x1, long y1, long x2, long y2, String^ color, double sim, long count, long width, long height);
 		long OpenProcess(long pid);
 		String^ EnumIniSection(String^ file);
@@ -402,8 +403,8 @@ namespace DMCLR {
 		long SetExitThread(long en);
 		long GetFps();
 		String^ VirtualQueryEx(long hwnd, long addr, long pmbi);
-		long AsmCallEx(long hwnd, long mode, String^ base_addr);
-		long GetRemoteApiAddress(long hwnd, long base_addr, String^ fun_name);
+		long long AsmCallEx(long hwnd, long mode, String^ base_addr);
+		long long GetRemoteApiAddress(long hwnd, long base_addr, String^ fun_name);
 		String^ ExecuteCmd(String^ cmd, String^ current_dir, long time_out);
 		long SpeedNormalGraphic(long en);
 		long UnLoadDriver();
